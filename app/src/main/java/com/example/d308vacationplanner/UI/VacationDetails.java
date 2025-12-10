@@ -37,8 +37,6 @@ public class VacationDetails extends AppCompatActivity {
 
     String name;
 
-
-
     int vacationID;
 
     Repository repository;
@@ -64,26 +62,37 @@ public class VacationDetails extends AppCompatActivity {
 
 
         fab.setOnClickListener(new View.OnClickListener() {
+            //this button is to add new excursions, to edit existing ones you click them in the recycler view.
             @Override
             public void onClick(View v) {
-                // Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
-                //  startActivity(intent);
+                Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
+                intent.putExtra("vacationID", vacationID);
+                intent.putExtra("vacationName", name);
+                startActivity(intent);
             }
         });
-        /*
+       reloadRecyclerView();
+
+
+
+    }
+    //This method allows code reuse inside onCreate and onResume so recycler view can refresh.
+    public void reloadRecyclerView(){
+        //This is the recyclerView that shows the associated excursions
         RecyclerView recyclerView = findViewById(R.id.excursionRecyclerView);
+        //instantiating the repo and passing getApplication for the context
         repository = new Repository(getApplication());
-        final VacationAdapter partAdapter = new VacationAdapter(this);
-        recyclerView.setAdapter(partAdapter);
+        //This is the adapter that adapts the excursion list item to the recycler view.
+        final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
+        recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Excursion> filteredParts = new ArrayList<>();
+        //this list is going to contain the excursions related to the selected vacation.
+        List<Excursion> filteredExcursions = new ArrayList<>();
         for(Excursion excursion : repository.getmAllExcursions()){
-            if(excursion.getVacationID() == vacationID) filteredParts.add(excursion);
+            if(excursion.getVacationID() == vacationID) filteredExcursions.add(excursion);
+
         }
         excursionAdapter.setExcursions(filteredExcursions);
-         */
-
-
     }
 
     @Override
@@ -126,15 +135,32 @@ public class VacationDetails extends AppCompatActivity {
 
         if (item.getItemId() == R.id.deleteVacationMenuItem) {
 
-            Toast.makeText(getApplicationContext(), "You are deleting vacation with ID: " + vacationID, Toast.LENGTH_LONG).show();
-            Vacation testVacation = new Vacation(vacationID, "test");
-            repository.delete(testVacation);
+
+
+            if(repository.getmAssociatedExcursions(vacationID).size()!=0){
+               Toast.makeText(getApplicationContext(), "Vacation has associated excursions, and cannot be deleted.", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "Vacation deleted.", Toast.LENGTH_LONG).show();
+                repository.delete(vacationID);
+            }
             this.finish();
             return true;
         }
 
 
         return true;
+
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        reloadRecyclerView();
+        /*List<Excursion> associatedExcursions = repository.getmAssociatedExcursions(vacationID);
+        RecyclerView recyclerView = findViewById(R.id.excursionRecyclerView);
+        final ExcursionAdapter excursionAdapter = new ExcursionAdapter((this));
+        recyclerView.setAdapter(excursionAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        excursionAdapter.setExcursions(associatedExcursions);*/
 
     }
 

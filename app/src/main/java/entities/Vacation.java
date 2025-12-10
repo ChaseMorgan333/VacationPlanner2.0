@@ -1,5 +1,6 @@
 package entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -33,6 +34,15 @@ public class Vacation {
 
     public void setVacationID(int vacationID) {
         this.vacationID = vacationID;
+    }
+
+    @NonNull
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.vacationID);
+        builder.append(this.vacationName);
+        return builder.toString();
     }
 
 

@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import dao.ExcursionDAO;
 import dao.VacationDAO;
+import entities.Excursion;
 import entities.Vacation;
 
 public class Repository {
@@ -15,6 +17,12 @@ public class Repository {
 
     private List<Vacation> mAllVacations;
 
+    private ExcursionDAO mExcursionDAO;
+
+    private List<Excursion> mAllExcursions;
+
+    private List<Excursion> mAssociatedExcursions;
+
     private static int NUMBER_OF_THREADS = 4;
 
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -22,6 +30,7 @@ public class Repository {
     public Repository(Application application){
         VacationDatabaseBuilder db = VacationDatabaseBuilder.getDatabase(application);
         mVacationDAO = db.vacationDAO();
+        mExcursionDAO = db.excursionDAO();
     }
 
     //gets a list of all vacations in the database
@@ -35,6 +44,36 @@ public class Repository {
             e.printStackTrace();
         }
         return mAllVacations;
+    }
+
+    public List<Excursion> getmAllExcursions(){
+        databaseExecutor.execute(()->{
+            mAllExcursions = mExcursionDAO.getAllExcursions();
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAllExcursions;
+    }
+
+    public List<Excursion> getmAssociatedExcursions(int mVacationID){
+        databaseExecutor.execute(()->{
+            mAssociatedExcursions = mVacationDAO.getAssociatedExcursions(mVacationID);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAssociatedExcursions;
+    }
+
+    public void insert(Excursion excursion){
+        databaseExecutor.execute(()->{
+            mExcursionDAO.insert(excursion);
+        });
     }
 
     //inserts a vacation into the database
@@ -57,7 +96,8 @@ public class Repository {
         }
     }
 
-    public void deleteByID(int vacationID){
+
+    public void delete(int vacationID){
         databaseExecutor.execute(()->{
             mVacationDAO.deleteVacationByID(vacationID);
         });
@@ -68,6 +108,12 @@ public class Repository {
     public void update(Vacation vacation){
         databaseExecutor.execute(()->{
             mVacationDAO.update(vacation);
+        });
+    }
+
+    public void update(Excursion excursion) {
+        databaseExecutor.execute(()->{
+            mExcursionDAO.update(excursion);
         });
     }
 }

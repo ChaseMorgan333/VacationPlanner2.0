@@ -63,7 +63,7 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
             String name = current.getVacationName();
             holder.vacationItemView.setText(name);
         }else{
-            holder.vacationItemView.setText("No vacations booked.'");
+            holder.vacationItemView.setText("No vacations booked.");
         }
     }
 
