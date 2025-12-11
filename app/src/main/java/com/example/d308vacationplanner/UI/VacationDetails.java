@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -31,11 +31,25 @@ import entities.Vacation;
 public class VacationDetails extends AppCompatActivity {
 
     EditText editName;
-
-
-    EditText editID;
-
     String name;
+
+
+    EditText editAccommodation;
+    String accommodation;
+
+    EditText editVacationStartDate;
+    TextView vacationStartDate;
+    String startDate;
+
+    EditText editVacationEndDate;
+    TextView vacationEndDate;
+    String endDate;
+
+
+
+
+
+
 
     int vacationID;
 
@@ -53,12 +67,20 @@ public class VacationDetails extends AppCompatActivity {
         });
         FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
 
-        editName = findViewById(R.id.editVacation);
+        editName = findViewById(R.id.editVacationName);
         name = getIntent().getStringExtra("name");
         editName.setText(name);
         vacationID = getIntent().getIntExtra("id", -1);
-        editID = findViewById(R.id.editVacation2);
-        editID.setText(Integer.toString(vacationID));
+        editAccommodation = findViewById(R.id.editAccommodation);
+        accommodation = getIntent().getStringExtra("accommodation");
+        editAccommodation.setText(accommodation);
+        editVacationStartDate = findViewById(R.id.editVacationStartDate);
+        startDate = getIntent().getStringExtra("startDate");
+        editVacationStartDate.setText(startDate);
+        editVacationEndDate = findViewById(R.id.editVacationEndDate);
+        endDate = getIntent().getStringExtra("endDate");
+        editVacationEndDate.setText(endDate);
+
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -112,21 +134,21 @@ public class VacationDetails extends AppCompatActivity {
                 //creating a new vacation
                 if(repository.getmAllVacations().size()==0){
                     vacationID = 1;
-                    vacation = new Vacation(vacationID, editName.getText().toString());
+                    vacation = new Vacation(vacationID, editName.getText().toString(),editAccommodation.getText().toString(),vacationStartDate.getText().toString(),vacationEndDate.getText().toString());
                     repository.insert(vacation);
                     this.finish();
                 }else{
                     //if the repo is not empty we get the id of the last vacation in the list and set the new vacation id to that number
                     //plus 1
                     vacationID = repository.getmAllVacations().get(repository.getmAllVacations().size() - 1).getVacationID() + 1;
-                    vacation = new Vacation(vacationID, editName.getText().toString());
+                    vacation = new Vacation(vacationID, editName.getText().toString(),editAccommodation.getText().toString(),vacationStartDate.getText().toString(),vacationEndDate.getText().toString());
                     Toast.makeText(getApplicationContext(), "New vacation created: " + vacation.getVacationName(), Toast.LENGTH_LONG).show();
                     repository.insert(vacation);
                     this.finish();
                 }
                 //updating an existing vacation
             }else{
-                vacation = new Vacation(vacationID, editName.getText().toString());
+                vacation = new Vacation(vacationID, editName.getText().toString(),editAccommodation.getText().toString(),vacationStartDate.getText().toString(),vacationEndDate.getText().toString());
                 repository.update(vacation);
                 this.finish();
             }

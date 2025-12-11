@@ -2,12 +2,15 @@ package com.example.d308vacationplanner.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -60,32 +63,78 @@ public class ExcursionDetails extends AppCompatActivity {
         vacationNameLabel = findViewById(R.id.vacationNameLabel);
         vacationNameLabel.setText(vacationName);
         repository = new Repository(getApplication());
-        saveExcursionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Excursion excursion;
-                //creating a new excursion because we aren't editing an existing one.
-                if(excursionID == -1){
-                    //check if repo is empty and if it is then excursionID will be 1.
-                    if(repository.getmAllExcursions().size()==0){
-                        excursionID = 1;
-                    }else{
-                        //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
-                        excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
-                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString());
-                        repository.insert(excursion);
-                        finish();
-                    }
-                    //update existing excursion
+        saveExcursionButton.setOnClickListener(v -> {
+            Excursion excursion;
+            //creating a new excursion because we aren't editing an existing one.
+            if(excursionID == -1){
+                System.out.println("Creating a new excursion");
+                //check if repo is empty and if it is then excursionID will be 1.
+                if(repository.getmAllExcursions().isEmpty()){
+                    System.out.println("The excursion repo is empty so we are using id 1");
+                    excursionID = 1;
+                    excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString());
+                    repository.insert(excursion);
+                    finish();
                 }else{
-                    excursion = new Excursion(vacationID, excursionID, excursionName);
-                    repository.update(excursion);
+                    //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
+                    excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
+                    excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString());
+                    repository.insert(excursion);
                     finish();
                 }
 
+                //update existing excursion
+            }else{
+                excursion = new Excursion(vacationID, excursionID, excursionName);
+                repository.update(excursion);
+                finish();
             }
+
         });
 
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_excursion_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.saveExcursionMenuItem) {
+            Excursion excursion;
+            //creating a new excursion because we aren't editing an existing one.
+            if (excursionID == -1) {
+                System.out.println("Creating a new excursion");
+                //check if repo is empty and if it is then excursionID will be 1.
+                if (repository.getmAllExcursions().isEmpty()) {
+                    System.out.println("The excursion repo is empty so we are using id 1");
+                    excursionID = 1;
+                    excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString());
+                    repository.insert(excursion);
+                    this.finish();
+                } else {
+                    //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
+                    excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
+                    excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString());
+                    repository.insert(excursion);
+                    this.finish();
+                }
+
+                //update existing excursion
+            } else {
+                excursion = new Excursion(vacationID, excursionID, excursionName);
+                repository.update(excursion);
+                this.finish();
+            }
+        }
+        if(item.getItemId() == R.id.deleteExcursionMenuItem){
+            Excursion excursion = new Excursion(vacationID, excursionID, excursionName);
+            repository.delete(excursion);
+            this.finish();
+        }
+        return true;
+    }
+
 }

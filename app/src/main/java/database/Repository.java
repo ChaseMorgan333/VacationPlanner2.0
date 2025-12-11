@@ -104,6 +104,12 @@ public class Repository {
 
     }
 
+    public void delete(Excursion excursion){
+        databaseExecutor.execute(()->{
+            mExcursionDAO.delete(excursion);
+        });
+    }
+
     //updates and existing vacation in the database
     public void update(Vacation vacation){
         databaseExecutor.execute(()->{

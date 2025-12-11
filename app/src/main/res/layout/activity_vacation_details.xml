@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+<!-- Line for vacation name -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,11 +35,11 @@
                     android:text="Vacation Name:" />
 
                 <EditText
-                    android:id="@+id/editVacation"
+                    android:id="@+id/editVacationName"
                     android:layout_width="89dp"
                     android:layout_height="50dp" />
             </LinearLayout>
-
+<!-- Line for accomodation -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,12 +49,48 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:editable="false"
-                    android:text="VacationID" />
+                    android:text="Accommodation" />
 
                 <EditText
-                    android:id="@+id/editVacation2"
+                    android:id="@+id/editAccommodation"
                     android:layout_width="77dp"
                     android:layout_height="50dp" />
+            </LinearLayout>
+            <!-- Line for vacationStartDate -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:editable="false"
+                    android:text="Start Date: " />
+
+                <EditText
+                    android:id="@+id/editVacationStartDate"
+                    android:layout_width="261dp"
+                    android:layout_height="50dp"
+                    android:inputType="datetime|date" />
+            </LinearLayout>
+            <!-- Line for vacationEndDate -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:editable="false"
+                    android:text="End Date: " />
+
+                <EditText
+                    android:id="@+id/editVacationEndDate"
+                    android:layout_width="273dp"
+                    android:layout_height="50dp"
+                    android:inputType="datetime|date" />
             </LinearLayout>
         </LinearLayout>
 
