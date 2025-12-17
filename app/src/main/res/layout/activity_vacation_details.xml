@@ -36,7 +36,7 @@
 
                 <EditText
                     android:id="@+id/editVacationName"
-                    android:layout_width="89dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp" />
             </LinearLayout>
 <!-- Line for accomodation -->
@@ -53,7 +53,7 @@
 
                 <EditText
                     android:id="@+id/editAccommodation"
-                    android:layout_width="77dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp" />
             </LinearLayout>
             <!-- Line for vacationStartDate -->
@@ -68,11 +68,18 @@
                     android:editable="false"
                     android:text="Start Date: " />
 
-                <EditText
-                    android:id="@+id/editVacationStartDate"
-                    android:layout_width="261dp"
+                <TextView
+                    android:id="@+id/vacationStartDate"
+                    android:layout_width="161dp"
                     android:layout_height="50dp"
-                    android:inputType="datetime|date" />
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/editStartDateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Edit Start" />
             </LinearLayout>
             <!-- Line for vacationEndDate -->
             <LinearLayout
@@ -86,11 +93,18 @@
                     android:editable="false"
                     android:text="End Date: " />
 
-                <EditText
-                    android:id="@+id/editVacationEndDate"
-                    android:layout_width="273dp"
+                <TextView
+                    android:id="@+id/vacationEndDate"
+                    android:layout_width="169dp"
                     android:layout_height="50dp"
                     android:inputType="datetime|date" />
+
+                <Button
+                    android:id="@+id/editEndDateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Edit End" />
             </LinearLayout>
         </LinearLayout>
 
