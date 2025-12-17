@@ -1,7 +1,9 @@
 package com.example.d308vacationplanner.UI;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.d308vacationplanner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import database.Repository;
@@ -220,6 +225,45 @@ public class VacationDetails extends AppCompatActivity{
             this.finish();
             return true;
         }
+
+        if(item.getItemId() == R.id.notifyMenuItem){
+            if(!vacationStartDate.getText().toString().isEmpty()&&!vacationStartDate.getText().toString().isBlank()&&
+            !vacationEndDate.getText().toString().isBlank()&&!vacationEndDate.getText().toString().isEmpty()) {
+
+                String startDateFromScreen = vacationStartDate.getText().toString();
+                String endDateFromScreen = vacationEndDate.getText().toString();
+
+                //try catch
+                LocalDate myStartDateLocal = StartDatePickerFragment.parseDate(startDateFromScreen);
+                try {
+                    Date startDate = Date.from(myStartDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    Long triggerStartDate = startDate.getTime();
+                    Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
+                    intent.putExtra("key", "Vacation " + name + " is starting.");
+                    PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerStartDate, sender);
+                } catch (Exception e) {
+
+                }
+                LocalDate myEndDateLocal = StartDatePickerFragment.parseDate(endDateFromScreen);
+                try{
+                    Date endDate = Date.from(myEndDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    Long triggerEndDate = endDate.getTime();
+                    Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
+                    intent.putExtra("key", "Vacation " + name + " is ending.");
+                    PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_ONE_SHOT);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerEndDate, sender);
+                }catch (Exception e){
+
+                }
+            }else{
+                Toast.makeText(this.getApplicationContext(),"Start and End dates must be set first", Toast.LENGTH_LONG).show();
+            }
+            return true;
+        }
+
 
 
         return true;
