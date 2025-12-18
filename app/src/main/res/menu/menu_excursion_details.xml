@@ -6,4 +6,6 @@
           android:id="@+id/saveExcursionMenuItem"/>
     <item android:title="Delete Excursion"
           android:id="@+id/deleteExcursionMenuItem"/>
+    <item android:title="Notify On Start Day"
+          android:id="@+id/notifyOnStartDay"/>
 </menu>

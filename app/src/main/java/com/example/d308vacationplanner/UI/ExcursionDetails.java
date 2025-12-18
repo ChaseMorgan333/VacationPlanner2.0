@@ -1,5 +1,9 @@
 package com.example.d308vacationplanner.UI;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +21,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.d308vacationplanner.R;
+
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import database.Repository;
 import entities.Excursion;
@@ -166,14 +174,32 @@ public class ExcursionDetails extends AppCompatActivity {
                     this.finish();
                 }
             }
+        }
             if (item.getItemId() == R.id.deleteExcursionMenuItem) {
                 Excursion excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate);
                 repository.delete(excursion);
                 this.finish();
             }
+            if(item.getItemId() == R.id.notifyOnStartDay){
+                if(!editExcursionDate.getText().toString().isEmpty()){
+                    String excursionDate = editExcursionDate.getText().toString();
+
+                    LocalDate excursionDateLocal = StartDatePickerFragment.parseDate(excursionDate);
+                    try{
+                        Date startDate = Date.from(excursionDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        Long triggerStartDate = startDate.getTime();
+                        Intent intent = new Intent(ExcursionDetails.this, MyReceiver.class);
+                        intent.putExtra("key", "Excursion " + editExcursionName.getText().toString() + " is starting today");
+                        PendingIntent sender = PendingIntent.getBroadcast(ExcursionDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_ONE_SHOT);
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerStartDate, sender);
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
             return true;
-        }
-        return true;
+
     }
 
     private int clickedButtonID;
