@@ -1,6 +1,5 @@
 package com.example.d308vacationplanner.UI;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -25,17 +25,25 @@ public class ExcursionDetails extends AppCompatActivity {
 
     EditText editExcursionName;
 
-    EditText editExcursionDetail;
+    EditText editExcursionDate;
 
     TextView vacationNameLabel;
 
     String excursionName;
+
+    String excursionDate;
 
     String vacationName;
 
     int excursionID;
 
     int vacationID;
+
+    String vacationStartDate;
+
+    String vacationEndDate;
+
+    Button editExcursionDateButton;
 
     Repository repository;
 
@@ -51,49 +59,77 @@ public class ExcursionDetails extends AppCompatActivity {
             return insets;
         });
         Button saveExcursionButton = findViewById(R.id.saveExcursionButton);
+        editExcursionDateButton = findViewById(R.id.editExcursionDateButton);
 
         editExcursionName = findViewById(R.id.editExcursionName);
-        editExcursionDetail = findViewById(R.id.editExcursionDetail);
+        editExcursionDate = findViewById(R.id.editExcursionDate);
+        excursionDate = getIntent().getStringExtra("excursionDate");
         vacationID = getIntent().getIntExtra("vacationID", -1);
         vacationName = getIntent().getStringExtra("vacationName");
         excursionID = getIntent().getIntExtra("excursionID", -1);
         excursionName = getIntent().getStringExtra("excursionName");
+        editExcursionDate.setText(excursionDate);
         editExcursionName.setText(excursionName);
-        editExcursionDetail.setText(Integer.toString(excursionID));
+        editExcursionDate.setText(Integer.toString(excursionID));
         vacationNameLabel = findViewById(R.id.vacationNameLabel);
         vacationNameLabel.setText(vacationName);
         repository = new Repository(getApplication());
+
         saveExcursionButton.setOnClickListener(v -> {
-            Excursion excursion;
-            //creating a new excursion because we aren't editing an existing one.
-            if(excursionID == -1){
-                System.out.println("Creating a new excursion");
-                //check if repo is empty and if it is then excursionID will be 1.
-                if(repository.getmAllExcursions().isEmpty()){
-                    System.out.println("The excursion repo is empty so we are using id 1");
-                    excursionID = 1;
-                    excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString());
-                    repository.insert(excursion);
-                    finish();
-                }else{
-                    //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
-                    excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
-                    excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString());
-                    repository.insert(excursion);
+            if(hasDate()&&hasName()) {
+                Excursion excursion;
+                //creating a new excursion because we aren't editing an existing one.
+                if (excursionID == -1) {
+                    System.out.println("Creating a new excursion");
+                    //check if repo is empty and if it is then excursionID will be 1.
+                    if (repository.getmAllExcursions().isEmpty()) {
+                        System.out.println("The excursion repo is empty so we are using id 1");
+                        excursionID = 1;
+                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
+                        repository.insert(excursion);
+                        finish();
+                    } else {
+                        //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
+                        excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
+                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
+                        repository.insert(excursion);
+                        finish();
+                    }
+
+                    //update existing excursion
+                } else {
+                    excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate);
+                    repository.update(excursion);
                     finish();
                 }
-
-                //update existing excursion
-            }else{
-                excursion = new Excursion(vacationID, excursionID, excursionName);
-                repository.update(excursion);
-                finish();
             }
 
         });
 
+        editExcursionDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(v);
+            }
+        });
+
 
     }
+    private boolean hasName(){
+        if (editExcursionName.getText().toString().isEmpty()||editExcursionName.getText().toString().isBlank()){
+            Toast.makeText(this.getApplicationContext(), "Excursion must have a name.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+    private boolean hasDate(){
+        if(editExcursionDate.getText().toString().isEmpty()||editExcursionDate.getText().toString().isBlank()){
+            Toast.makeText(this.getApplicationContext(), "Excursion must have a date", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_excursion_details, menu);
@@ -103,38 +139,53 @@ public class ExcursionDetails extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.saveExcursionMenuItem) {
-            Excursion excursion;
-            //creating a new excursion because we aren't editing an existing one.
-            if (excursionID == -1) {
-                System.out.println("Creating a new excursion");
-                //check if repo is empty and if it is then excursionID will be 1.
-                if (repository.getmAllExcursions().isEmpty()) {
-                    System.out.println("The excursion repo is empty so we are using id 1");
-                    excursionID = 1;
-                    excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString());
-                    repository.insert(excursion);
-                    this.finish();
+            if (hasName() && hasDate()) {
+                Excursion excursion;
+                //creating a new excursion because we aren't editing an existing one.
+                if (excursionID == -1) {
+                    System.out.println("Creating a new excursion");
+                    //check if repo is empty and if it is then excursionID will be 1.
+                    if (repository.getmAllExcursions().isEmpty()) {
+                        System.out.println("The excursion repo is empty so we are using id 1");
+                        excursionID = 1;
+                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
+                        repository.insert(excursion);
+                        this.finish();
+                    } else {
+                        //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
+                        excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
+                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
+                        repository.insert(excursion);
+                        this.finish();
+                    }
+
+                    //update existing excursion
                 } else {
-                    //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
-                    excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
-                    excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString());
-                    repository.insert(excursion);
+                    excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate);
+                    repository.update(excursion);
                     this.finish();
                 }
-
-                //update existing excursion
-            } else {
-                excursion = new Excursion(vacationID, excursionID, excursionName);
-                repository.update(excursion);
+            }
+            if (item.getItemId() == R.id.deleteExcursionMenuItem) {
+                Excursion excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate);
+                repository.delete(excursion);
                 this.finish();
             }
-        }
-        if(item.getItemId() == R.id.deleteExcursionMenuItem){
-            Excursion excursion = new Excursion(vacationID, excursionID, excursionName);
-            repository.delete(excursion);
-            this.finish();
+            return true;
         }
         return true;
+    }
+
+    private int clickedButtonID;
+    private void showDatePickerDialog(View v){
+        clickedButtonID = v.getId();
+        if (v.getId() == R.id.editExcursionDateButton){
+            ExcursionDatePickerFragment newFragment = new ExcursionDatePickerFragment(this);
+            newFragment.show(getSupportFragmentManager(), "Date Picker" );
+        }
+
+
+
     }
 
 }

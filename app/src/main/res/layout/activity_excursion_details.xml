@@ -30,6 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Excursion Name:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_absoluteX="35dp"
@@ -40,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:maxLength="20"
                 android:text=""
                 app:layout_constraintLeft_toRightOf="@id/excursionNameView"
                 app:layout_constraintTop_toTopOf="parent"
@@ -54,18 +56,27 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/excursionDetailView"
+                android:id="@+id/excursionDateView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Excursion detail:" />
+                android:text="Excursion Date:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <EditText
-                android:id="@+id/editExcursionDetail"
-                android:layout_width="match_parent"
+                android:id="@+id/editExcursionDate"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:inputType="number|numberDecimal"
+                android:inputType="text"
+                android:maxLength="20"
                 tools:layout_editor_absoluteX="136dp"
                 tools:layout_editor_absoluteY="127dp" />
+
+            <Button
+                android:id="@+id/editExcursionDateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Edit Date" />
         </LinearLayout>
     </LinearLayout>
 
