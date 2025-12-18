@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,11 +31,17 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
     }
 
     public class VacationViewHolder extends RecyclerView.ViewHolder {
-        private final TextView vacationItemView;
+        private final LinearLayout vacationItemView;
+        private final TextView vacationNameTextView;
+        private final TextView vacationStartDateTextView;
+        private final TextView vacationEndDateTextView;
 
         public VacationViewHolder(@NonNull View itemView){
             super(itemView);
-            vacationItemView = itemView.findViewById(R.id.vacationListTextView);
+            vacationItemView = itemView.findViewById(R.id.vacationListLinearLayout);
+            vacationNameTextView = itemView.findViewById(R.id.vacationNameTextView);
+            vacationStartDateTextView = itemView.findViewById(R.id.vacationListViewStartDate);
+            vacationEndDateTextView = itemView.findViewById(R.id.vacationListViewEndDate);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -64,9 +71,12 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
         if(mVacations!=null) {
             Vacation current = mVacations.get(position);
             String name = current.getVacationName();
-            holder.vacationItemView.setText(name);
+
+            holder.vacationNameTextView.setText(current.getVacationName());
+            holder.vacationStartDateTextView.setText(current.getVacationStartDate());
+            holder.vacationEndDateTextView.setText(current.getVacationEndDate());
         }else{
-            holder.vacationItemView.setText("No vacations booked.");
+            //holder.vacationItemView.setText("No vacations booked.");
         }
     }
 
