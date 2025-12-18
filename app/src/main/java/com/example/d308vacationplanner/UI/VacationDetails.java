@@ -141,7 +141,7 @@ public class VacationDetails extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.menu_vacation_details, menu);
         return true;
     }
-
+    //Below are the boolean methods for checking that the vacation has a start date, end date, name, and accommodation.
     private boolean hasStartDate(){
        if(this.vacationStartDate.getText().toString().isEmpty()){
            Toast.makeText(this.getApplicationContext(), "Vacation must have a start date", Toast.LENGTH_LONG).show();
@@ -168,6 +168,15 @@ public class VacationDetails extends AppCompatActivity{
         }
     }
 
+    private boolean hasAccommodation(){
+        if(this.editAccommodation.getText().toString().isEmpty()||this.editAccommodation.getText().toString().isBlank()){
+            Toast.makeText(this.getApplicationContext(),"Vacation must have an accommodation.", Toast.LENGTH_LONG).show();
+            return false;
+        }else {
+            return true;
+        }
+    }
+
 
 
 
@@ -178,7 +187,7 @@ public class VacationDetails extends AppCompatActivity{
         repository = new Repository(getApplication());
         if (item.getItemId() == R.id.saveVacationMenuItem) {
             Vacation vacation;
-            if(hasStartDate()&&hasEndDate()&&hasName()) {
+            if(hasStartDate()&&hasEndDate()&&hasName()&&hasAccommodation()) {
                 //creating a new vacation because vacationID -1 indicates that no vacationID was passed in the intent (we aren't editing an existing vacation)
                 if (vacationID == -1) {
                     //creating a new vacation
@@ -208,7 +217,8 @@ public class VacationDetails extends AppCompatActivity{
 
                     this.finish();
                 }
-            }this.finish();
+                Toast.makeText(this.getApplicationContext(), "Vacation: " + name + " has been saved.", Toast.LENGTH_LONG).show();
+            }
             return true;
         }
 
@@ -227,41 +237,75 @@ public class VacationDetails extends AppCompatActivity{
         }
 
         if(item.getItemId() == R.id.notifyMenuItem){
-            if(!vacationStartDate.getText().toString().isEmpty()&&!vacationStartDate.getText().toString().isBlank()&&
-            !vacationEndDate.getText().toString().isBlank()&&!vacationEndDate.getText().toString().isEmpty()) {
+            if(hasStartDate()&&hasEndDate()&&hasName()) {
 
                 String startDateFromScreen = vacationStartDate.getText().toString();
                 String endDateFromScreen = vacationEndDate.getText().toString();
 
                 //try catch
                 LocalDate myStartDateLocal = StartDatePickerFragment.parseDate(startDateFromScreen);
-                try {
-                    Date startDate = Date.from(myStartDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                    Long triggerStartDate = startDate.getTime();
-                    Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
-                    intent.putExtra("key", "Vacation " + name + " is starting.");
-                    PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerStartDate, sender);
-                } catch (Exception e) {
-
-                }
                 LocalDate myEndDateLocal = StartDatePickerFragment.parseDate(endDateFromScreen);
-                try{
-                    Date endDate = Date.from(myEndDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                    Long triggerEndDate = endDate.getTime();
-                    Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
-                    intent.putExtra("key", "Vacation " + name + " is ending.");
-                    PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_ONE_SHOT);
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerEndDate, sender);
-                }catch (Exception e){
+                if (myStartDateLocal.isEqual(myEndDateLocal)) {
+                    try {
+                        Date startDate = Date.from(myStartDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        Long triggerStartDate = startDate.getTime();
+                        Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
+                        intent.putExtra("key", "Vacation " + name + " is starting and ending today.");
+                        PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerStartDate, sender);
+                    } catch (Exception e) {
 
+                    }
+                    Toast.makeText(this.getApplicationContext(), "Notification set for: " + editName.getText().toString(), Toast.LENGTH_LONG).show();
+                } else {
+                    try {
+                        Date startDate = Date.from(myStartDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        Long triggerStartDate = startDate.getTime();
+                        Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
+                        intent.putExtra("key", "Vacation " + name + " is starting.");
+                        PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerStartDate, sender);
+                    } catch (Exception e) {
+
+                    }
+
+                    try {
+                        Date endDate = Date.from(myEndDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        Long triggerEndDate = endDate.getTime();
+                        Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
+                        intent.putExtra("key", "Vacation " + name + " is ending.");
+                        PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_ONE_SHOT);
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerEndDate, sender);
+                    } catch (Exception e) {
+
+                    }
+                    Toast.makeText(this.getApplicationContext(), "Notification set for: " + editName.getText().toString(), Toast.LENGTH_LONG).show();
                 }
-            }else{
-                Toast.makeText(this.getApplicationContext(),"Start and End dates must be set first", Toast.LENGTH_LONG).show();
             }
             return true;
+        }
+
+        if(item.getItemId()==R.id.shareVacationMenuItem){
+            //Make sure none of the vacation details are empty before sharing.
+            if(this.hasName()&&this.hasStartDate()&&this.hasEndDate()&&this.hasAccommodation()){
+            Intent shareVacationIntent = new Intent();
+            shareVacationIntent.setAction(Intent.ACTION_SEND);
+            shareVacationIntent.putExtra(Intent.EXTRA_TITLE, "Vacation: " + editName.getText().toString());
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("Vacation Name: " + editName.getText().toString() + "\n");
+            stringBuilder.append("Accommodation: " + editAccommodation.getText().toString() + "\n");
+            stringBuilder.append("Start Date: " + startDate + "\n");
+            stringBuilder.append("End Date: " + endDate + "\n");
+            String vacationDetails = stringBuilder.toString();
+            shareVacationIntent.putExtra(Intent.EXTRA_TEXT, vacationDetails);
+            shareVacationIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(shareVacationIntent, "Sharing");
+            startActivity(shareIntent);
+            return true;
+            }
         }
 
 
