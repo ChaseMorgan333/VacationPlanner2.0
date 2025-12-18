@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import entities.Vacation;
 public class VacationList extends AppCompatActivity {
 
     private Repository repository;
+    private TextView noVacations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,12 @@ public class VacationList extends AppCompatActivity {
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         vacationAdapter.setVacations(allVacations);
+        noVacations = findViewById(R.id.noVacationsTextView);
+        if(allVacations.isEmpty()){
+            noVacations.setText("No vacations have been booked.");
+        }else{
+            noVacations.setText("");
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -80,6 +88,10 @@ public class VacationList extends AppCompatActivity {
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         vacationAdapter.setVacations(allVacations);
-
+        if(allVacations.isEmpty()){
+            noVacations.setText("No vacations have been booked.");
+        }else{
+            noVacations.setText("");
+        }
     }
 }

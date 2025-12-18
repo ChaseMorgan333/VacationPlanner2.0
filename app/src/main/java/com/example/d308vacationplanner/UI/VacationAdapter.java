@@ -75,8 +75,6 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
             holder.vacationNameTextView.setText(current.getVacationName());
             holder.vacationStartDateTextView.setText(current.getVacationStartDate());
             holder.vacationEndDateTextView.setText(current.getVacationEndDate());
-        }else{
-            //holder.vacationItemView.setText("No vacations booked.");
         }
     }
 

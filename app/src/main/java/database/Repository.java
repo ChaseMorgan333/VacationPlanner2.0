@@ -108,6 +108,11 @@ public class Repository {
         databaseExecutor.execute(()->{
             mExcursionDAO.delete(excursion);
         });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
     //updates and existing vacation in the database

@@ -14,5 +14,11 @@
     <item
         android:id="@+id/shareVacationMenuItem"
         android:title="Share Vacation Details"/>
+    <item
+        android:id="@+id/addExcursionMenuItem"
+        android:title="Add Excursion"/>
+    <item
+        android:id="@+id/deleteAllExcursionsMenuItem"
+        android:title="Delete All Excursions"/>
 
 </menu>

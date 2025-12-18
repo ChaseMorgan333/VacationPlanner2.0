@@ -217,7 +217,7 @@ public class VacationDetails extends AppCompatActivity{
 
                     this.finish();
                 }
-                Toast.makeText(this.getApplicationContext(), "Vacation: " + name + " has been saved.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getApplicationContext(), "Vacation: " + editName.getText().toString() + " has been saved.", Toast.LENGTH_LONG).show();
             }
             return true;
         }
@@ -229,10 +229,11 @@ public class VacationDetails extends AppCompatActivity{
             if(repository.getmAssociatedExcursions(vacationID).size()!=0){
                Toast.makeText(getApplicationContext(), "Vacation has associated excursions, and cannot be deleted.", Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(getApplicationContext(), "Vacation deleted.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Vacation: " + name + " deleted.", Toast.LENGTH_LONG).show();
                 repository.delete(vacationID);
+                this.finish();
             }
-            this.finish();
+
             return true;
         }
 
@@ -307,7 +308,20 @@ public class VacationDetails extends AppCompatActivity{
             return true;
             }
         }
+        if(item.getItemId()==R.id.addExcursionMenuItem){
+            Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
+            intent.putExtra("vacationID", vacationID);
+            intent.putExtra("vacationName", name);
+            startActivity(intent);
+        }
+        if(item.getItemId()==R.id.deleteAllExcursionsMenuItem){
+            List<Excursion> associatedExcursions = repository.getmAssociatedExcursions(vacationID);
+            for(Excursion excursion : associatedExcursions){
+                repository.delete(excursion);
 
+            }
+            reloadRecyclerView();
+        }
 
 
         return true;
