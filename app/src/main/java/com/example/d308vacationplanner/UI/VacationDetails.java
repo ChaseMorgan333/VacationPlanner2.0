@@ -177,7 +177,53 @@ public class VacationDetails extends AppCompatActivity{
         }
     }
 
+    private void saveVacation(){
+        Vacation vacation;
+        if(hasStartDate()&&hasEndDate()&&hasName()&&hasAccommodation()) {
+            //creating a new vacation because vacationID -1 indicates that no vacationID was passed in the intent (we aren't editing an existing vacation)
+            if (vacationID == -1) {
+                //creating a new vacation
+                if (repository.getmAllVacations().size() == 0) {
+                    vacationID = 1;
 
+                    vacation = new Vacation(vacationID, editName.getText().toString(), editAccommodation.getText().toString(), vacationStartDate.getText().toString(), vacationEndDate.getText().toString());
+                    this.name = editName.getText().toString();
+                    this.accommodation = editAccommodation.getText().toString();
+                    this.startDate = vacationStartDate.getText().toString();
+                    this.endDate = vacationEndDate.getText().toString();
+                    repository.insert(vacation);
+
+
+                } else {
+                    //if the repo is not empty we get the id of the last vacation in the list and set the new vacation id to that number
+                    //plus 1
+                    vacationID = repository.getmAllVacations().get(repository.getmAllVacations().size() - 1).getVacationID() + 1;
+
+                    vacation = new Vacation(vacationID, editName.getText().toString(), editAccommodation.getText().toString(), vacationStartDate.getText().toString(), vacationEndDate.getText().toString());
+                    this.name = editName.getText().toString();
+                    this.accommodation = editAccommodation.getText().toString();
+                    this.startDate = vacationStartDate.getText().toString();
+                    this.endDate = vacationEndDate.getText().toString();
+                    Toast.makeText(getApplicationContext(), "New vacation created: " + vacation.getVacationName(), Toast.LENGTH_LONG).show();
+                    repository.insert(vacation);
+
+
+                }
+                //updating an existing vacation
+            } else {
+
+                vacation = new Vacation(vacationID, editName.getText().toString(), editAccommodation.getText().toString(), vacationStartDate.getText().toString(), vacationEndDate.getText().toString());
+                this.name = editName.getText().toString();
+                this.accommodation = editAccommodation.getText().toString();
+                this.startDate = vacationStartDate.getText().toString();
+                this.endDate = vacationEndDate.getText().toString();
+                repository.update(vacation);
+
+
+            }
+            Toast.makeText(this.getApplicationContext(), "Vacation: " + editName.getText().toString() + " has been saved.", Toast.LENGTH_LONG).show();
+        }
+    }
 
 
 
@@ -186,39 +232,7 @@ public class VacationDetails extends AppCompatActivity{
         //if save button selected
         repository = new Repository(getApplication());
         if (item.getItemId() == R.id.saveVacationMenuItem) {
-            Vacation vacation;
-            if(hasStartDate()&&hasEndDate()&&hasName()&&hasAccommodation()) {
-                //creating a new vacation because vacationID -1 indicates that no vacationID was passed in the intent (we aren't editing an existing vacation)
-                if (vacationID == -1) {
-                    //creating a new vacation
-                    if (repository.getmAllVacations().size() == 0) {
-                        vacationID = 1;
-
-                        vacation = new Vacation(vacationID, editName.getText().toString(), editAccommodation.getText().toString(), vacationStartDate.getText().toString(), vacationEndDate.getText().toString());
-                        repository.insert(vacation);
-
-                        this.finish();
-                    } else {
-                        //if the repo is not empty we get the id of the last vacation in the list and set the new vacation id to that number
-                        //plus 1
-                        vacationID = repository.getmAllVacations().get(repository.getmAllVacations().size() - 1).getVacationID() + 1;
-
-                        vacation = new Vacation(vacationID, editName.getText().toString(), editAccommodation.getText().toString(), vacationStartDate.getText().toString(), vacationEndDate.getText().toString());
-                        Toast.makeText(getApplicationContext(), "New vacation created: " + vacation.getVacationName(), Toast.LENGTH_LONG).show();
-                        repository.insert(vacation);
-
-                        this.finish();
-                    }
-                    //updating an existing vacation
-                } else {
-
-                    vacation = new Vacation(vacationID, editName.getText().toString(), editAccommodation.getText().toString(), vacationStartDate.getText().toString(), vacationEndDate.getText().toString());
-                    repository.update(vacation);
-
-                    this.finish();
-                }
-                Toast.makeText(this.getApplicationContext(), "Vacation: " + editName.getText().toString() + " has been saved.", Toast.LENGTH_LONG).show();
-            }
+            saveVacation();
             return true;
         }
 
@@ -309,6 +323,11 @@ public class VacationDetails extends AppCompatActivity{
             }
         }
         if(item.getItemId()==R.id.addExcursionMenuItem){
+            if(hasName()&&hasStartDate()&&hasEndDate()&&hasAccommodation()){
+                saveVacation();
+
+
+            }
             Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
             intent.putExtra("vacationID", vacationID);
             intent.putExtra("vacationName", name);

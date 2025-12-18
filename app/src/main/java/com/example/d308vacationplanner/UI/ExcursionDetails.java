@@ -70,7 +70,7 @@ public class ExcursionDetails extends AppCompatActivity {
         excursionName = getIntent().getStringExtra("excursionName");
         editExcursionDate.setText(excursionDate);
         editExcursionName.setText(excursionName);
-        editExcursionDate.setText(Integer.toString(excursionID));
+        editExcursionDate.setText(excursionDate);
         vacationNameLabel = findViewById(R.id.vacationNameLabel);
         vacationNameLabel.setText(vacationName);
         repository = new Repository(getApplication());

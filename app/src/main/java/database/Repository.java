@@ -23,6 +23,8 @@ public class Repository {
 
     private List<Excursion> mAssociatedExcursions;
 
+    private String mVacationName;
+
     private static int NUMBER_OF_THREADS = 4;
 
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -56,6 +58,18 @@ public class Repository {
             e.printStackTrace();
         }
         return mAllExcursions;
+    }
+
+    public String getVacationName(int vacationID){
+        databaseExecutor.execute(()->{
+            mVacationName = mExcursionDAO.getVacationNameByID(vacationID);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mVacationName;
     }
 
     public List<Excursion> getmAssociatedExcursions(int mVacationID){

@@ -1,7 +1,11 @@
 package entities;
 
+import android.app.Application;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import database.Repository;
 
 @Entity(tableName = "excursions")
 public class Excursion {
@@ -14,11 +18,17 @@ public class Excursion {
 
     private String excursionDate;
 
+
+
+
+
     public Excursion(int vacationID, int excursionID, String excursionName, String excursionDate){
         this.vacationID = vacationID;
         this.excursionID = excursionID;
         this.excursionName = excursionName;
         this.excursionDate = excursionDate;
+
+
     }
 
     public int getExcursionID() {

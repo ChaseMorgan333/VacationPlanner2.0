@@ -1,5 +1,6 @@
 package com.example.d308vacationplanner.UI;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.example.d308vacationplanner.R;
 
 import java.util.List;
 
+import database.Repository;
 import entities.Excursion;
 
 public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.ExcursionViewHolder> {
@@ -31,18 +33,22 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
     public class ExcursionViewHolder extends RecyclerView.ViewHolder {
         private final TextView excursionItemView;
 
+
         public ExcursionViewHolder(@NonNull View itemView) {
             super(itemView);
             excursionItemView = itemView.findViewById(R.id.excursionListTextView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     int position = getAdapterPosition();
                     final Excursion current = mExcursions.get(position);
                     Intent intent = new Intent(context, ExcursionDetails.class);
                     intent.putExtra("excursionID", current.getExcursionID());
                     intent.putExtra("vacationID", current.getVacationID());
                     intent.putExtra("excursionName", current.getExcursionName());
+                    intent.putExtra("excursionDate", current.getExcursionDate());
+
                     context.startActivity(intent);
 
                 }
