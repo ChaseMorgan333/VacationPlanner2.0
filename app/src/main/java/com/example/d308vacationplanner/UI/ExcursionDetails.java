@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,8 +30,10 @@ import java.time.ZoneId;
 import database.Repository;
 import entities.Excursion;
 
+
 public class ExcursionDetails extends AppCompatActivity {
 
+    private static final String TAG = "ExcursionDetails";
     EditText editExcursionName;
 
     EditText editExcursionDate;
@@ -66,6 +69,8 @@ public class ExcursionDetails extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Log.d(TAG, "my on create has started");
+
         Button saveExcursionButton = findViewById(R.id.saveExcursionButton);
         editExcursionDateButton = findViewById(R.id.editExcursionDateButton);
 
@@ -73,15 +78,23 @@ public class ExcursionDetails extends AppCompatActivity {
         editExcursionDate = findViewById(R.id.editExcursionDate);
         excursionDate = getIntent().getStringExtra("excursionDate");
         vacationID = getIntent().getIntExtra("vacationID", -1);
-        vacationName = getIntent().getStringExtra("vacationName");
+        Log.w(TAG, Integer.toString(vacationID));
+        //vacationName = getIntent().getStringExtra("vacationName");
         excursionID = getIntent().getIntExtra("excursionID", -1);
         excursionName = getIntent().getStringExtra("excursionName");
+        //vacationStartDate = getIntent().getStringExtra("vacationStartDate");
+        //vacationEndDate = getIntent().getStringExtra("vacationEndDate");
+        repository = new Repository(getApplication());
         editExcursionDate.setText(excursionDate);
         editExcursionName.setText(excursionName);
         editExcursionDate.setText(excursionDate);
         vacationNameLabel = findViewById(R.id.vacationNameLabel);
         vacationNameLabel.setText(vacationName);
-        repository = new Repository(getApplication());
+
+
+        vacationNameLabel.setText(repository.getVacationName(vacationID));
+
+
 
         saveExcursionButton.setOnClickListener(v -> {
             if(hasDate()&&hasName()) {

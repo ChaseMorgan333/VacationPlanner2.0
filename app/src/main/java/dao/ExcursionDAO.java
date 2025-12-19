@@ -28,8 +28,14 @@ public interface ExcursionDAO {
     @Query("SELECT * FROM excursions WHERE vacationID=:vacationID ORDER BY excursionID ASC")
     List<Excursion> getAssociatedExcursions(int vacationID);
 
-    @Query("SELECT vacationName FROM vacations WHERE vacationID = :vacationID")
-    public String getVacationNameByID(int vacationID);
+   @Query("SELECT vacationName FROM vacations WHERE vacationID = :vacationID")
+   String getVacationNameByID(int vacationID);
+
+   @Query("SELECT vacationStartDate FROM vacations WHERE vacationID = :vacationID")
+    String getVacationStartDateByID(int vacationID);
+
+   @Query("SELECT vacationEndDate FROM vacations WHERE vacationID = :vacationID")
+    String getVacationEndDateByID(int vacationID);
 
 
 }

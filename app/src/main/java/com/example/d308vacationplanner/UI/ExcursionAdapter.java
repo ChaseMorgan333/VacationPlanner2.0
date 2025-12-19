@@ -25,6 +25,8 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
     private final Context context;
     private final LayoutInflater mInflater;
 
+
+
     public ExcursionAdapter(Context context){
         mInflater = LayoutInflater.from(context);
         this.context = context;
@@ -32,6 +34,8 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
 
     public class ExcursionViewHolder extends RecyclerView.ViewHolder {
         private final TextView excursionItemView;
+
+
 
 
         public ExcursionViewHolder(@NonNull View itemView) {
@@ -48,6 +52,7 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
                     intent.putExtra("vacationID", current.getVacationID());
                     intent.putExtra("excursionName", current.getExcursionName());
                     intent.putExtra("excursionDate", current.getExcursionDate());
+
 
                     context.startActivity(intent);
 
@@ -67,8 +72,6 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
         if(mExcursions!=null){
             Excursion current = mExcursions.get(position);
             String excursionName = current.getExcursionName();
-            int vacationID = current.getVacationID();
-            int excursionID = current.getExcursionID();
             holder.excursionItemView.setText(excursionName);
         }else{
             holder.excursionItemView.setText("No excursions scheduled.");

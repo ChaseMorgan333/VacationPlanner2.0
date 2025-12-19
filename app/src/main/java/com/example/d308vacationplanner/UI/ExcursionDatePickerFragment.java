@@ -78,23 +78,20 @@ public class ExcursionDatePickerFragment extends DialogFragment implements DateP
 
     //Since this fragment is for picking the end date we need to verify that a start date
     //has been selected and that the end date is after that.
-    private boolean excursionDateDuringVacation(String endDate){
-        String startDate = this.excursionDetails.vacationStartDate;
+    private boolean excursionDateDuringVacation(String excursionDate){
+        String vacationStartDate = this.excursionDetails.vacationStartDate;
         String vacationEndDate = this.excursionDetails.vacationEndDate;
-        //first check if the start date has been set.
-        if(startDate.isEmpty()){
-            Toast.makeText(this.getContext(), "Start date must be set first", Toast.LENGTH_LONG).show();
+        LocalDate vacationStartDateLocal = parseDate(vacationStartDate);
+        LocalDate vacationEndDateLocal = parseDate(vacationEndDate);
+        LocalDate excursionDateLocal = parseDate(excursionDate);
+        if(excursionDateLocal.isEqual(vacationEndDateLocal)||excursionDateLocal.isAfter(vacationStartDateLocal)&&excursionDateLocal.isEqual(vacationEndDateLocal)||
+        excursionDateLocal.isBefore(vacationEndDateLocal)){
+            return true;
         }else{
-            //now check if the end date selected is after the start.
-            LocalDate startDateLocal = parseDate(startDate);
-            LocalDate endDateLocal = parseDate(endDate);
-            if(endDateLocal.isAfter(startDateLocal)||endDateLocal.equals(startDateLocal)){
-                return true;
-            }else{
-                Toast.makeText(this.getContext(), "End date must be after start date", Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(this.getContext(), "Excursion must be during the vacation.", Toast.LENGTH_LONG).show();
+            return false;
         }
-        return false;
+
     }
 
 
@@ -107,7 +104,7 @@ public class ExcursionDatePickerFragment extends DialogFragment implements DateP
         builder.append(year);
         String formattedDate = builder.toString();
         //First check that the date is either today or in the future.
-        if(futureDate(formattedDate)){
+        if(futureDate(formattedDate)&&excursionDateDuringVacation(formattedDate)){
 
                 this.excursionDetails.editExcursionDate.setText(formattedDate);
 

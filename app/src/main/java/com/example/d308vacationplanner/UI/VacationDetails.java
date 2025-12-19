@@ -109,6 +109,8 @@ public class VacationDetails extends AppCompatActivity{
                 Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
                 intent.putExtra("vacationID", vacationID);
                 intent.putExtra("vacationName", name);
+                intent.putExtra("vacationStartDate", startDate);
+                intent.putExtra("vacationEndDate", endDate);
                 startActivity(intent);
             }
         });
@@ -230,7 +232,7 @@ public class VacationDetails extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //if save button selected
-        repository = new Repository(getApplication());
+        //repository = new Repository(getApplication());
         if (item.getItemId() == R.id.saveVacationMenuItem) {
             saveVacation();
             return true;
@@ -331,6 +333,8 @@ public class VacationDetails extends AppCompatActivity{
             Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
             intent.putExtra("vacationID", vacationID);
             intent.putExtra("vacationName", name);
+            intent.putExtra("vacationStartDate", startDate);
+            intent.putExtra("vacationEndDate", endDate);
             startActivity(intent);
         }
         if(item.getItemId()==R.id.deleteAllExcursionsMenuItem){

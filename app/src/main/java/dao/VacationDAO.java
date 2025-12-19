@@ -31,4 +31,6 @@ public interface VacationDAO {
 
     @Query("SELECT * FROM EXCURSIONS WHERE vacationID = :vacationID")
     List<Excursion> getAssociatedExcursions(int vacationID);
+
+
 }
