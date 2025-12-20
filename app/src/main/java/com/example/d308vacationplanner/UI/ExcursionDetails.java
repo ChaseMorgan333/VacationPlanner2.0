@@ -36,7 +36,7 @@ public class ExcursionDetails extends AppCompatActivity {
     private static final String TAG = "ExcursionDetails";
     EditText editExcursionName;
 
-    EditText editExcursionDate;
+    TextView editExcursionDate;
 
     TextView vacationNameLabel;
 
@@ -89,10 +89,11 @@ public class ExcursionDetails extends AppCompatActivity {
         editExcursionName.setText(excursionName);
         editExcursionDate.setText(excursionDate);
         vacationNameLabel = findViewById(R.id.vacationNameLabel);
-        vacationNameLabel.setText(vacationName);
 
 
-        vacationNameLabel.setText(repository.getVacationName(vacationID));
+        vacationStartDate = repository.getmVacationStartDate(vacationID);
+        vacationEndDate = repository.getmVacationEndDate(vacationID);
+        vacationNameLabel.setText(repository.getmVacationName(vacationID));
 
 
 

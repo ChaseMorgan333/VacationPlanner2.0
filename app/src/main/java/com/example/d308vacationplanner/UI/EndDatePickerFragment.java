@@ -56,6 +56,14 @@ public class EndDatePickerFragment extends DialogFragment implements DatePickerD
         throw new IllegalArgumentException("Unsupported date format");
     }
 
+    private boolean hasExcursions(){
+        if(!fragment.repository.getmAllExcursions().isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     //Create a method to validate that the start date is in the future
     private boolean futureDate(String date){
 

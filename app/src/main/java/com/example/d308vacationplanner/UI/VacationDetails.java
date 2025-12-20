@@ -91,14 +91,22 @@ public class VacationDetails extends AppCompatActivity{
         editVacationStartDate.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                showDatePickerDialog(v);
+                if(hasExcursions()){
+                    Toast.makeText(getApplicationContext(),"All excursions must be deleted before editing start date.", Toast.LENGTH_LONG).show();
+                }else {
+                    showDatePickerDialog(v);
+                }
             }
         });
         editVacationEndDate = findViewById(R.id.editEndDateButton);
         editVacationEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog(v);
+                if(hasExcursions()){
+                    Toast.makeText(getApplicationContext(),"All excursions must be deleted before editing end date.", Toast.LENGTH_LONG).show();
+                }else {
+                    showDatePickerDialog(v);
+                }
             }
         });
 
@@ -106,12 +114,17 @@ public class VacationDetails extends AppCompatActivity{
             //this button is to add new excursions, to edit existing ones you click them in the recycler view.
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
-                intent.putExtra("vacationID", vacationID);
-                intent.putExtra("vacationName", name);
-                intent.putExtra("vacationStartDate", startDate);
-                intent.putExtra("vacationEndDate", endDate);
-                startActivity(intent);
+                if(hasAccommodation()&&hasName()&&hasStartDate()&&hasEndDate()) {
+                    saveVacation();
+                    Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
+                    intent.putExtra("vacationID", vacationID);
+                    intent.putExtra("vacationName", name);
+                    intent.putExtra("vacationStartDate", startDate);
+                    intent.putExtra("vacationEndDate", endDate);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "All vacation details must be entered first.", Toast.LENGTH_LONG).show();
+                }
             }
         });
        reloadRecyclerView();
@@ -119,6 +132,14 @@ public class VacationDetails extends AppCompatActivity{
 
 
     }
+    private boolean hasExcursions(){
+        if(!repository.getmAssociatedExcursions(vacationID).isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     //This method allows code reuse inside onCreate and onResume so recycler view can refresh.
     public void reloadRecyclerView(){
         //This is the recyclerView that shows the associated excursions
@@ -254,7 +275,7 @@ public class VacationDetails extends AppCompatActivity{
         }
 
         if(item.getItemId() == R.id.notifyMenuItem){
-            if(hasStartDate()&&hasEndDate()&&hasName()) {
+            if(hasStartDate()&&hasEndDate()&&hasName()&&hasAccommodation()) {
 
                 String startDateFromScreen = vacationStartDate.getText().toString();
                 String endDateFromScreen = vacationEndDate.getText().toString();
@@ -301,6 +322,8 @@ public class VacationDetails extends AppCompatActivity{
                     }
                     Toast.makeText(this.getApplicationContext(), "Notification set for: " + editName.getText().toString(), Toast.LENGTH_LONG).show();
                 }
+            }else{
+                Toast.makeText(this.getApplicationContext(), "All vacation details must be entered first.", Toast.LENGTH_LONG).show();
             }
             return true;
         }
@@ -322,20 +345,23 @@ public class VacationDetails extends AppCompatActivity{
             Intent shareIntent = Intent.createChooser(shareVacationIntent, "Sharing");
             startActivity(shareIntent);
             return true;
+            }else{
+                Toast.makeText(this.getApplicationContext(), "All vacation details must be entered first.", Toast.LENGTH_LONG).show();
             }
         }
         if(item.getItemId()==R.id.addExcursionMenuItem){
             if(hasName()&&hasStartDate()&&hasEndDate()&&hasAccommodation()){
                 saveVacation();
-
-
+                Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
+                intent.putExtra("vacationID", vacationID);
+                intent.putExtra("vacationName", name);
+                intent.putExtra("vacationStartDate", startDate);
+                intent.putExtra("vacationEndDate", endDate);
+                startActivity(intent);
             }
-            Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
-            intent.putExtra("vacationID", vacationID);
-            intent.putExtra("vacationName", name);
-            intent.putExtra("vacationStartDate", startDate);
-            intent.putExtra("vacationEndDate", endDate);
-            startActivity(intent);
+
+        }else{
+            Toast.makeText(this.getApplicationContext(), "All vacation details must be entered first.", Toast.LENGTH_LONG).show();
         }
         if(item.getItemId()==R.id.deleteAllExcursionsMenuItem){
             List<Excursion> associatedExcursions = repository.getmAssociatedExcursions(vacationID);
