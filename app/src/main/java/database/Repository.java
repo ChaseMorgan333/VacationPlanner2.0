@@ -162,11 +162,21 @@ public class Repository {
         databaseExecutor.execute(()->{
             mVacationDAO.update(vacation);
         });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
     public void update(Excursion excursion) {
         databaseExecutor.execute(()->{
             mExcursionDAO.update(excursion);
         });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 }

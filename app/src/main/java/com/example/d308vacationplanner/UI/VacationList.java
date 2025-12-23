@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -63,6 +65,8 @@ public class VacationList extends AppCompatActivity {
             noVacations.setText("");
         }
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_vacation_list, menu);
