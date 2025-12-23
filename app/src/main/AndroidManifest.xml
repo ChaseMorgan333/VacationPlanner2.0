@@ -14,15 +14,16 @@
         <receiver android:name=".UI.MyReceiver"
             android:enabled="true"
             android:exported="true"></receiver>
-        <activity
-            android:name=".UI.ExcursionDetails"
-            android:exported="false"
-            android:parentActivityName=".UI.VacationDetails"
-            />
+
         <activity
             android:name=".UI.VacationDetails"
             android:exported="false"
             android:label="Vacation Details"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity
+            android:name=".UI.ExcursionDetails"
+            android:exported="false"
             />
         <activity
             android:name=".UI.VacationList"

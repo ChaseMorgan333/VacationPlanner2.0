@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,6 +73,8 @@ public class VacationDetails extends AppCompatActivity{
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
 
         editName = findViewById(R.id.editVacationName);
@@ -252,6 +255,9 @@ public class VacationDetails extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+        }
         //if save button selected
         //repository = new Repository(getApplication());
         if (item.getItemId() == R.id.saveVacationMenuItem) {
@@ -360,8 +366,6 @@ public class VacationDetails extends AppCompatActivity{
                 startActivity(intent);
             }
 
-        }else{
-            Toast.makeText(this.getApplicationContext(), "All vacation details must be entered first.", Toast.LENGTH_LONG).show();
         }
         if(item.getItemId()==R.id.deleteAllExcursionsMenuItem){
             List<Excursion> associatedExcursions = repository.getmAssociatedExcursions(vacationID);

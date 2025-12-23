@@ -15,10 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.d308vacationplanner.R;
@@ -69,6 +71,8 @@ public class ExcursionDetails extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Log.d(TAG, "my on create has started");
 
         Button saveExcursionButton = findViewById(R.id.saveExcursionButton);
@@ -162,8 +166,14 @@ public class ExcursionDetails extends AppCompatActivity {
         return true;
     }
 
+
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            this.finish();
+        }
         if (item.getItemId() == R.id.saveExcursionMenuItem) {
             if (hasName() && hasDate()) {
                 Excursion excursion;
