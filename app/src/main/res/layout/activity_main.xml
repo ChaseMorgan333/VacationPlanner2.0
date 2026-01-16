@@ -30,22 +30,68 @@
         android:id="@+id/imageView"
         android:layout_width="205dp"
         android:layout_height="161dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vacationNameTextView"
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="113dp"
-        android:layout_height="67dp"
-        android:layout_marginBottom="156dp"
-        android:backgroundTint="@color/aqua"
-        android:text="@string/enter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="@color/aqua" />
+
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="174dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="373dp"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/loginVerticalLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="@string/username"></TextView>
+
+            <EditText
+                android:id="@+id/userNameField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp" />
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password" />
+
+                <EditText
+                    android:id="@+id/passwordField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="40dp"
+                    android:inputType="textPassword" />
+            </LinearLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="113dp"
+            android:layout_height="67dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="84dp"
+            android:backgroundTint="@color/aqua"
+            android:text="@string/enter"
+            app:rippleColor="@color/aqua" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

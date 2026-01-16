@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">Vacation Planner 1.0</string>
-    <string name="welcome">Welcome to Vacation Planner 1.0!</string>
+    <!-- Main Activity UI -->
+    <string name="app_name">Vacation Planner 2.0</string>
+    <string name="welcome">Welcome to Vacation Planner 2.0!</string>
+    <string name ="username">User Name:</string>
+    <string name ="password">Password:</string>
     <string name="enter">Enter</string>
+
+    <!-- Vacation Details UI -->
+
+    <!-- Excursion Details UI -->
 </resources>
