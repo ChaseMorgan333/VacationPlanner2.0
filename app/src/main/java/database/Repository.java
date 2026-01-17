@@ -2,6 +2,7 @@ package database;
 
 import android.app.Application;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +29,8 @@ public class Repository {
 
     private List<Photo> mAssociatedPhotos;
 
+    private byte[] mGetByteArrayFromDB;
+
     private List<Excursion> mAllExcursions;
 
     private List<Excursion> mAssociatedExcursions;
@@ -53,6 +56,7 @@ public class Repository {
         mVacationDAO = db.vacationDAO();
         mExcursionDAO = db.excursionDAO();
         mUserDAO = db.userDAO();
+        mPhotoDAO = db.photoDAO();
     }
 
     public List<User> getmAllUsers(){
@@ -165,6 +169,18 @@ public class Repository {
         return mAssociatedExcursions;
     }
 
+    public List<Photo> getmAssociatedPhotos(int vacationID) {
+        databaseExecutor.execute(()->{
+            mAssociatedPhotos = mPhotoDAO.getAssociatedPhotos(vacationID);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAssociatedPhotos;
+    }
+
     public void insert(Excursion excursion){
         databaseExecutor.execute(()->{
             mExcursionDAO.insert(excursion);
@@ -184,6 +200,18 @@ public class Repository {
         databaseExecutor.execute(()->{
             mUserDAO.insert(user);
         });
+    }
+
+    //inserts a photo into the database
+    public void insert(Photo photo){
+        databaseExecutor.execute(()->{
+            mPhotoDAO.insert(photo);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
     //deletes a vacation from the database
@@ -260,5 +288,21 @@ public class Repository {
         }catch (InterruptedException e){
             e.printStackTrace();
         }
+    }
+
+    public byte[] getmGetByteArrayFromDB() {
+        return mGetByteArrayFromDB;
+    }
+
+    public void setmGetByteArrayFromDB(byte[] mGetByteArrayFromDB) {
+        this.mGetByteArrayFromDB = mGetByteArrayFromDB;
+    }
+
+
+
+
+
+    public void setmAssociatedPhotos(List<Photo> mAssociatedPhotos) {
+        this.mAssociatedPhotos = mAssociatedPhotos;
     }
 }

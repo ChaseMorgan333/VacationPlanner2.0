@@ -7,7 +7,7 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -19,9 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.D308VacationPlanner">
         <activity
+            android:name=".PhotoDetails"
+            android:exported="false" />
+        <activity
             android:name=".PhotoGallery"
             android:exported="false"
-            android:label="Photo Gallery"/>
+            android:label="Photo Gallery" />
         <activity
             android:name=".LoginSettings"
             android:exported="false"
