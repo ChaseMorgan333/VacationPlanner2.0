@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.d308vacationplanner.PhotoGallery;
 import com.example.d308vacationplanner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -53,7 +54,9 @@ public class VacationDetails extends AppCompatActivity{
     TextView vacationEndDate;
     String endDate;
 
+    Button packingListButton;
 
+    Button photoGalleryButton;
 
 
 
@@ -109,6 +112,23 @@ public class VacationDetails extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(),"All excursions must be deleted before editing end date.", Toast.LENGTH_LONG).show();
                 }else {
                     showDatePickerDialog(v);
+                }
+            }
+        });
+
+        packingListButton = findViewById(R.id.packinglistbutton);
+        photoGalleryButton = findViewById(R.id.photogallerybutton);
+        photoGalleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(hasAccommodation()&&hasName()&&hasStartDate()&&hasEndDate()) {
+                    saveVacation();
+                    Intent intent = new Intent(VacationDetails.this, PhotoGallery.class);
+                    intent.putExtra("vacationID", vacationID);
+                    intent.putExtra("vacationName", name);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getApplicationContext(), "All vacation details must be entered first.", Toast.LENGTH_LONG).show();
                 }
             }
         });

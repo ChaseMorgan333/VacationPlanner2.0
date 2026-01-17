@@ -32,7 +32,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:text="Vacation Name:"
+                    android:text="@string/vacationname"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <EditText
@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:editable="false"
-                    android:text="Accommodation:"
+                    android:text="@string/accommodation"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <EditText
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:editable="false"
-                    android:text="Start Date: "
+                    android:text="@string/startdate"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <TextView
@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:editable="false"
-                    android:text="End Date: "
+                    android:text="@string/enddate"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <TextView
@@ -133,7 +133,7 @@
         android:layout_width="337dp"
         android:layout_height="212dp"
         android:maxHeight="20dp"
-        app:layout_constraintBottom_toTopOf="@id/floatingActionButton2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView2" />
@@ -142,12 +142,33 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Associated Excursions:"
+        android:text="@string/associatedexcursions"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/excursionRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vacationScrollView" />
+        app:layout_constraintTop_toBottomOf="@id/buttonlayout"
+         />
+
+    <LinearLayout
+        android:id="@+id/buttonlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vacationScrollView"
+        app:layout_constraintBottom_toTopOf="@id/textView2">
+
+        <Button
+            android:id="@+id/packinglistbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/packinglistbutton" />
+
+        <Button
+            android:id="@+id/photogallerybutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/photogallerybutton"/>
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

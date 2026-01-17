@@ -7,17 +7,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dao.ExcursionDAO;
+import dao.PhotoDAO;
+import dao.UserDAO;
 import dao.VacationDAO;
 import entities.Excursion;
+import entities.Photo;
+import entities.User;
 import entities.Vacation;
 
 public class Repository {
+    private UserDAO mUserDAO;
 
     private VacationDAO mVacationDAO;
 
     private List<Vacation> mAllVacations;
 
     private ExcursionDAO mExcursionDAO;
+
+    private PhotoDAO mPhotoDAO;
+
+    private List<Photo> mAssociatedPhotos;
 
     private List<Excursion> mAllExcursions;
 
@@ -29,6 +38,12 @@ public class Repository {
 
     private String mVacationEndDate;
 
+    private String mUserName;
+
+    private String mPassword;
+
+    private List<User> mAllUsers;
+
     private static int NUMBER_OF_THREADS = 4;
 
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -37,7 +52,33 @@ public class Repository {
         VacationDatabaseBuilder db = VacationDatabaseBuilder.getDatabase(application);
         mVacationDAO = db.vacationDAO();
         mExcursionDAO = db.excursionDAO();
+        mUserDAO = db.userDAO();
     }
+
+    public List<User> getmAllUsers(){
+        databaseExecutor.execute(()->{
+            mAllUsers = mUserDAO.getAllUsers();
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAllUsers;
+    }
+
+    public String getmPassword(String userName){
+        databaseExecutor.execute(()->{
+            mPassword = mUserDAO.getPasswordForUser(userName);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mPassword;
+    }
+
 
     //gets a list of all vacations in the database
     public List<Vacation> getmAllVacations(){
@@ -74,6 +115,18 @@ public class Repository {
             e.printStackTrace();
         }
         return mVacationName;
+    }
+
+    public String getmUserName(String userName){
+        databaseExecutor.execute(()->{
+            mUserName = mUserDAO.findUserName(userName);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mUserName;
     }
 
     public String getmVacationStartDate(int vacationID){
@@ -126,6 +179,13 @@ public class Repository {
 
     }
 
+    //inserts a user into the database
+    public void insert(User user){
+        databaseExecutor.execute(()->{
+            mUserDAO.insert(user);
+        });
+    }
+
     //deletes a vacation from the database
     public void delete(Vacation vacation){
         databaseExecutor.execute(()->{
@@ -172,6 +232,28 @@ public class Repository {
     public void update(Excursion excursion) {
         databaseExecutor.execute(()->{
             mExcursionDAO.update(excursion);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void update(User user){
+        databaseExecutor.execute(()->{
+            update(user);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(String userName){
+        databaseExecutor.execute(()->{
+            mUserDAO.delete(userName);
         });
         try{
             Thread.sleep(1000);

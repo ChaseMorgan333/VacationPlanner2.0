@@ -1,11 +1,11 @@
 package com.example.d308vacationplanner.UI;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,22 +14,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.nio.charset.StandardCharsets;
-import java.util.HexFormat;
-
+import com.example.d308vacationplanner.LoginSettings;
 import com.example.d308vacationplanner.R;
+
+import dao.UserDAO;
+import database.Repository;
 
 public class MainActivity extends AppCompatActivity {
     static int numAttempts = 0;
     static int numAlert = 0;
-    static final String userName = "Chase";
-    static final String password = "Adventure333*";
 
     String userNameEntered;
 
     String passwordEntered;
+
+    TextView loginSettings;
+
+    public UserDAO userDAO;
+
+    public Repository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         EditText userNameField = findViewById(R.id.userNameField);
+
         EditText passwordField = findViewById(R.id.passwordField);
         //Setting up button with onclick
         Button button = findViewById(R.id.button);
@@ -51,10 +55,17 @@ public class MainActivity extends AppCompatActivity {
                 userNameEntered = userNameField.getText().toString();
                 passwordEntered = passwordField.getText().toString();
                 if (numAttempts < 5) {
-                    if (userNameMatch(userNameEntered) && passwordMatch(passwordEntered)) {
+                    if(userExists()){
+                        if(userNameFound(userNameEntered)){
+                            if(passwordMatch(userNameEntered, passwordEntered)){
+                                login();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Invalid password", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(), "App not protected.", Toast.LENGTH_LONG).show();
                         login();
-                    } else {
-                        numAttempts++;
                     }
 
                 }else{
@@ -62,24 +73,42 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        repository = new Repository(getApplication());
+        loginSettings = findViewById(R.id.loginSettings);
+        loginSettings.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, LoginSettings.class);
+                startActivity(intent);
+            }
+        });
     }
     //Create a method for validating the username and password
-    private boolean userNameMatch(String userNameEntered){
-        if(userNameEntered.equals(userName)){
-            return true;
-        }else {
-            Toast.makeText(getApplicationContext(), "Username does not match.", Toast.LENGTH_LONG).show();
+    boolean userExists(){
+        if(repository.getmAllUsers().isEmpty()){
             return false;
         }
+        return true;
     }
-    private boolean passwordMatch(String passwordEntered){
-        if(passwordEntered.equals(password)){
-            return true;
-        }else{
-            Toast.makeText(getApplicationContext(), "Password does not match.", Toast.LENGTH_LONG).show();
-            return false;
+    boolean userNameFound(String userNameEntered){
+        try{
+            if (repository.getmUserName(userNameEntered).equals(userNameEntered)) {
+                return true;
+            }
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Invalid Username", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
 
+
+        return false;
+    }
+
+    boolean passwordMatch(String userNameEntered, String passwordEntered){
+        if(repository.getmPassword(userNameEntered).equals(passwordEntered)){
+            return true;
+        }
+        return false;
     }
     private void login(){
         Intent intent = new Intent(MainActivity.this, VacationList.class);

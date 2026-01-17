@@ -6,16 +6,22 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import dao.ExcursionDAO;
+import dao.UserDAO;
 import dao.VacationDAO;
 import entities.Excursion;
+import entities.Photo;
+import entities.User;
 import entities.Vacation;
 
 import android.content.Context;
 
-@Database(entities = {Vacation.class, Excursion.class}, version = 6, exportSchema = false)
+@Database(entities = {Vacation.class, Excursion.class, User.class, Photo.class}, version = 10, exportSchema = false)
 public abstract class VacationDatabaseBuilder extends RoomDatabase{
     public abstract VacationDAO vacationDAO();
     public abstract ExcursionDAO excursionDAO();
+
+    public abstract UserDAO userDAO();
+
 
     private static volatile VacationDatabaseBuilder INSTANCE;
 

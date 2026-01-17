@@ -2,11 +2,33 @@
     <!-- Main Activity UI -->
     <string name="app_name">Vacation Planner 2.0</string>
     <string name="welcome">Welcome to Vacation Planner 2.0!</string>
-    <string name ="username">User Name:</string>
-    <string name ="password">Password:</string>
+    <string name="username">User Name:</string>
+    <string name="password">Password:</string>
     <string name="enter">Enter</string>
+    <string name="loginsettings">Login Settings</string>
+
+    <!-- Login Settings UI -->
+    <string name="currentusername">Current Username:</string>
+    <string name="currentpassword">Current Password:</string>
+    <string name="newusername">New Username:</string>
+    <string name="newpassword">New Password:</string>
+    <string name="updatebutton">Update</string>
 
     <!-- Vacation Details UI -->
+    <string name="vacationname">Vacation Name:</string>
+    <string name="accommodation">Accomodation:</string>
+    <string name="startdate">Start Date: </string>
+    <string name="editstartbutton">Edit Start</string>
+    <string name="enddate">End Date: </string>
+    <string name="editendbutton">Edit End</string>
+    <string name="associatedexcursions">Associated Excursions:</string>
+    <string name="packinglistbutton">Packing List</string>
+    <string name="photogallerybutton">PhotoGallery</string>
 
     <!-- Excursion Details UI -->
+
+    <!-- Photo Gallery UI -->
+    <string name="photogalleryname">"Photo gallery for: "</string>
+    <string name="takephotobutton">Take Photo</string>
+    <string name="importphotobutton">Import Photo</string>
 </resources>
