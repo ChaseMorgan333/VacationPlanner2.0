@@ -87,9 +87,7 @@ public class PhotoGallery extends AppCompatActivity {
         repository = new Repository(getApplication());
 
         List<Photo> existingPhotos = repository.getmAssociatedPhotos(vacationID);
-        //just checking that all the photos are in the list
-        System.out.println(existingPhotos.toString());
-        //The photos need to be shared to the recyclerAdapter so an intent can be started with the photo id
+
 
         if(existingPhotos!=null){
             for(Photo p: existingPhotos){
@@ -130,12 +128,35 @@ public class PhotoGallery extends AppCompatActivity {
 
         super.onResume();
         List<Photo> allPhotos = repository.getmAssociatedPhotos(vacationID);
-
+        ImageRecyclerData dataHolder;
         RecyclerView recyclerView1 = findViewById(R.id.imagerecyclerview);
+        recyclerDataArrayList.clear();
+        for(Photo p : allPhotos){
+            dataHolder = new ImageRecyclerData();
+            dataHolder.setPhoto(p);
+
+            recyclerDataArrayList.add(dataHolder);
+        }
+        for(ImageRecyclerData data: recyclerDataArrayList){
+            Photo p = data.getPhoto();
+            byte[] bitmapAsBytes = p.getBlob();
+            if(bitmapAsBytes!= null & bitmapAsBytes.length > 0){
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapAsBytes, 0, bitmapAsBytes.length);
+                if(bitmap == null){
+                    Toast.makeText(getApplicationContext(), "Couldn't load image", Toast.LENGTH_LONG).show();
+                }else{
+                    //need to change
+                    data.setBitmap(bitmap);
+                }
+            }else{
+                Toast.makeText(getApplicationContext(), "Couldn't load image", Toast.LENGTH_LONG).show();
+            }
+        }
         final ImageRecyclerAdapter recyclerAdapter = new ImageRecyclerAdapter(this.recyclerDataArrayList, getApplicationContext());
+        recyclerAdapter.setPhotos(allPhotos);
         recyclerView1.setAdapter(recyclerAdapter);
         recyclerView1.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
-        recyclerAdapter.setPhotos(allPhotos);
+
         if(allPhotos.isEmpty()){
 
         }
@@ -162,22 +183,22 @@ public class PhotoGallery extends AppCompatActivity {
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ImageRecyclerData imageData = new ImageRecyclerData();
-            imageData.setBitmap(imageBitmap);
+            //ImageRecyclerData imageData = new ImageRecyclerData();
+            //imageData.setBitmap(imageBitmap);
 
 
             photo = new Photo();
             photo.setVacationID(this.vacationID);
             photo.setPhotoName("New Photo");
             photo.setBlob(getBytesFromBitmap(imageBitmap));
-            imageData.setPhoto(photo);
-            imageData.setImgid(photo.getPhotoID());
+            //imageData.setPhoto(photo);
+            //imageData.setImgid(photo.getPhotoID());
 
             repository.insert(photo);
 
 
 
-            recyclerDataArrayList.add(imageData);
+            //recyclerDataArrayList.add(imageData);
 
 
 
