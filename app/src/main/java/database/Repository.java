@@ -8,10 +8,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dao.ExcursionDAO;
+import dao.PacklistDAO;
 import dao.PhotoDAO;
 import dao.UserDAO;
 import dao.VacationDAO;
 import entities.Excursion;
+import entities.Packlist;
 import entities.Photo;
 import entities.User;
 import entities.Vacation;
@@ -26,6 +28,8 @@ public class Repository {
     private ExcursionDAO mExcursionDAO;
 
     private PhotoDAO mPhotoDAO;
+
+    private PacklistDAO mPacklistDAO;
 
     private List<Photo> mAssociatedPhotos;
 
@@ -57,6 +61,7 @@ public class Repository {
         mExcursionDAO = db.excursionDAO();
         mUserDAO = db.userDAO();
         mPhotoDAO = db.photoDAO();
+        mPacklistDAO = db.packlistDAO();
     }
 
     //-----------------------THIS SECTION IS FOR VACATIONS--------------------------//
@@ -200,7 +205,15 @@ public class Repository {
     //-----------------------________END_PHOTOS________--------------------------//
 
     //-----------------------THIS SECTION IS FOR PACKLISTS--------------------------//
-
+    //repo method for inserting items.
+    public void insertNewPacklistItem(Packlist itemToAdd){
+        databaseExecutor.execute(()->{
+            mPacklistDAO.insert(itemToAdd);
+        });
+    }
+    //repo method for deleting items.
+    //repo method for selecting a list of items based only on their name.
+    //repo method for selecting a list of items based only on their category.
 
     //-----------------------________END_PACKLISTS________--------------------------//
 

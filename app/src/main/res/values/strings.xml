@@ -31,4 +31,15 @@
     <string name="photogalleryname">"Photo gallery for: "</string>
     <string name="takephotobutton">Take Photo</string>
     <string name="importphotobutton">Import Photo</string>
+
+
+    <!-- Packing List UI -->
+    <string-array name="packingcategories">
+        <item>Clothing</item>
+        <item>Toiletries</item>
+        <item>Electronics</item>
+        <item>Food</item>
+        <item>Gear</item>
+        <item>Other</item>
+    </string-array>
 </resources>

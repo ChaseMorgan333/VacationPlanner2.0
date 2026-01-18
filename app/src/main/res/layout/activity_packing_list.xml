@@ -75,6 +75,7 @@
             android:inputType="text"
              />
         <Spinner
+            android:entries="@array/packingcategories"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -82,11 +83,13 @@
 
         </Spinner>
         <CheckBox
+            android:id="@+id/itemPackedCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
         </CheckBox>
         <Button
+            android:id="@+id/addItemButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Item"></Button>
@@ -100,6 +103,7 @@
         app:layout_constraintTop_toBottomOf="@id/linearLayout2">
 
         <SearchView
+            android:id="@+id/searchView"
             android:layout_width="200dp"
             android:layout_height="match_parent"
             >
@@ -109,7 +113,7 @@
         </SearchView>
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/searchItemButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -124,12 +128,13 @@
 
 
         <Spinner
-            android:id="@+id/spinner"
+            android:entries="@array/packingcategories"
+            android:id="@+id/spinnerSearchCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/showCategoryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -146,28 +151,27 @@
         >
 
         <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
+
+            android:layout_width="16dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Results for:" />
 
         <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
+            android:id="@+id/resultsForTextView"
+            android:layout_width="97dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-             />
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="wrap_content"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Report Generated:" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/reportGeneratedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

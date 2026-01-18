@@ -56,4 +56,12 @@ public class Packlist {
     public void setPacked(Boolean packed) {
         this.packed = packed;
     }
+
+    public int getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
 }
