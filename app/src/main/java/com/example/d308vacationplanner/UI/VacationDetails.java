@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.d308vacationplanner.PackingList;
 import com.example.d308vacationplanner.PhotoGallery;
 import com.example.d308vacationplanner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -117,6 +118,21 @@ public class VacationDetails extends AppCompatActivity{
         });
 
         packingListButton = findViewById(R.id.packinglistbutton);
+        packingListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(hasAccommodation()&&hasName()&&hasStartDate()&&hasEndDate()) {
+                    saveVacation();
+                    Intent intent = new Intent(VacationDetails.this, PackingList.class);
+                    intent.putExtra("vacationID", vacationID);
+                    intent.putExtra("vacationName", name);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getApplicationContext(), "All vacation details must be entered first.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        });
         photoGalleryButton = findViewById(R.id.photogallerybutton);
         photoGalleryButton.setOnClickListener(new View.OnClickListener() {
             @Override

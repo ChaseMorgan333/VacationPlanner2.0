@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,9 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,6 +73,8 @@ public class PhotoGallery extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         galleryNameLabel = findViewById(R.id.vacationnamegallerylabel2);
         galleryName = getIntent().getStringExtra("vacationName");
         vacationID = getIntent().getIntExtra("vacationID", -1);
@@ -222,5 +227,13 @@ public class PhotoGallery extends AppCompatActivity {
             e.printStackTrace();
         }
         return byteArray;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+        }
+        return true;
     }
 }

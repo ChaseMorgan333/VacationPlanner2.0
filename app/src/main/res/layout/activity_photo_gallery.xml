@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -20,12 +20,14 @@
             android:id="@+id/vacationnamegallerylabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/photogalleryname" />
+            android:text="@string/photogalleryname"
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/vacationnamegallerylabel2"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-             />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -34,10 +36,10 @@
         android:id="@+id/imagerecyclerview"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:maxHeight="300dp"
         android:layout_marginTop="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="400dp"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

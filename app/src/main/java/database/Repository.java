@@ -59,31 +59,7 @@ public class Repository {
         mPhotoDAO = db.photoDAO();
     }
 
-    public List<User> getmAllUsers(){
-        databaseExecutor.execute(()->{
-            mAllUsers = mUserDAO.getAllUsers();
-        });
-        try{
-            Thread.sleep(1000);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return mAllUsers;
-    }
-
-    public String getmPassword(String userName){
-        databaseExecutor.execute(()->{
-            mPassword = mUserDAO.getPasswordForUser(userName);
-        });
-        try{
-            Thread.sleep(1000);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return mPassword;
-    }
-
-
+    //-----------------------THIS SECTION IS FOR VACATIONS--------------------------//
     //gets a list of all vacations in the database
     public List<Vacation> getmAllVacations(){
         databaseExecutor.execute(()->{
@@ -97,6 +73,29 @@ public class Repository {
         return mAllVacations;
     }
 
+    public List<Excursion> getmAssociatedExcursions(int mVacationID){
+        databaseExecutor.execute(()->{
+            mAssociatedExcursions = mVacationDAO.getAssociatedExcursions(mVacationID);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAssociatedExcursions;
+    }
+
+    //inserts a vacation into the database
+    public void insert(Vacation vacation){
+        databaseExecutor.execute(()->{
+            mVacationDAO.insert(vacation);
+        });
+
+    }
+
+    //-----------------------________END_VACATIONS________--------------------------//
+
+    //-----------------------THIS SECTION IS FOR EXCURSIONS--------------------------//
     public List<Excursion> getmAllExcursions(){
         databaseExecutor.execute(()->{
             mAllExcursions = mExcursionDAO.getAllExcursions();
@@ -107,30 +106,6 @@ public class Repository {
             e.printStackTrace();
         }
         return mAllExcursions;
-    }
-
-    public String getmVacationName(int vacationID){
-        databaseExecutor.execute(()->{
-            mVacationName = mExcursionDAO.getVacationNameByID(vacationID);
-        });
-        try{
-            Thread.sleep(1000);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return mVacationName;
-    }
-
-    public String getmUserName(String userName){
-        databaseExecutor.execute(()->{
-            mUserName = mUserDAO.findUserName(userName);
-        });
-        try{
-            Thread.sleep(1000);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return mUserName;
     }
 
     public String getmVacationStartDate(int vacationID){
@@ -157,18 +132,60 @@ public class Repository {
         return mVacationEndDate;
     }
 
-    public List<Excursion> getmAssociatedExcursions(int mVacationID){
+    public void insert(Excursion excursion){
         databaseExecutor.execute(()->{
-            mAssociatedExcursions = mVacationDAO.getAssociatedExcursions(mVacationID);
+            mExcursionDAO.insert(excursion);
+        });
+    }
+    //-----------------------________END_EXCURSIONS________--------------------------//
+    public String getmVacationName(int vacationID){
+        databaseExecutor.execute(()->{
+            mVacationName = mExcursionDAO.getVacationNameByID(vacationID);
         });
         try{
             Thread.sleep(1000);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        return mAssociatedExcursions;
+        return mVacationName;
+    }
+    //-----------------------THIS SECTION IS FOR USERS--------------------------//
+    public List<User> getmAllUsers(){
+        databaseExecutor.execute(()->{
+            mAllUsers = mUserDAO.getAllUsers();
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAllUsers;
+    }
+    //-----------------------________END_USERS________--------------------------//
+    public String getmPassword(String userName){
+        databaseExecutor.execute(()->{
+            mPassword = mUserDAO.getPasswordForUser(userName);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mPassword;
     }
 
+    public String getmUserName(String userName){
+        databaseExecutor.execute(()->{
+            mUserName = mUserDAO.findUserName(userName);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mUserName;
+    }
+    //-----------------------THIS SECTION IS FOR PHOTOS--------------------------//
     public List<Photo> getmAssociatedPhotos(int vacationID) {
         databaseExecutor.execute(()->{
             mAssociatedPhotos = mPhotoDAO.getAssociatedPhotos(vacationID);
@@ -180,20 +197,21 @@ public class Repository {
         }
         return mAssociatedPhotos;
     }
+    //-----------------------________END_PHOTOS________--------------------------//
 
-    public void insert(Excursion excursion){
-        databaseExecutor.execute(()->{
-            mExcursionDAO.insert(excursion);
-        });
-    }
+    //-----------------------THIS SECTION IS FOR PACKLISTS--------------------------//
 
-    //inserts a vacation into the database
-    public void insert(Vacation vacation){
-        databaseExecutor.execute(()->{
-            mVacationDAO.insert(vacation);
-        });
 
-    }
+    //-----------------------________END_PACKLISTS________--------------------------//
+
+
+
+
+
+
+
+
+
 
     //inserts a user into the database
     public void insert(User user){
@@ -318,19 +336,10 @@ public class Repository {
         }
     }
 
-    public byte[] getmGetByteArrayFromDB() {
-        return mGetByteArrayFromDB;
-    }
-
-    public void setmGetByteArrayFromDB(byte[] mGetByteArrayFromDB) {
-        this.mGetByteArrayFromDB = mGetByteArrayFromDB;
-    }
 
 
 
 
 
-    public void setmAssociatedPhotos(List<Photo> mAssociatedPhotos) {
-        this.mAssociatedPhotos = mAssociatedPhotos;
-    }
+
 }

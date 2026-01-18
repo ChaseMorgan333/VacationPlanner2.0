@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import database.Repository;
@@ -42,6 +43,8 @@ public class PhotoDetails extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         byte[] byteArray = getIntent().getByteArrayExtra("picture");
         //Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
 
@@ -73,6 +76,12 @@ public class PhotoDetails extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
+
+        if (item.getItemId() == android.R.id.home) {
+                this.finish();
+        }
+
+
         if(item.getItemId()==R.id.editdetails){
             editTextPhotoName.setEnabled(true);
             editTextPhotoLog.setEnabled(true);
