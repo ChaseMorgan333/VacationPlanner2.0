@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "photos")
 public class Photo {
 
+
     private String photoName;
 
     @PrimaryKey(autoGenerate = true)
@@ -20,6 +21,8 @@ public class Photo {
     public String getPhotoName() {
         return photoName;
     }
+
+    private String photoLog;
 
     public void setPhotoName(String photoName) {
         this.photoName = photoName;
@@ -47,5 +50,14 @@ public class Photo {
 
     public void setBlob(byte[] blob) {
         this.blob = blob;
+    }
+
+
+    public String getPhotoLog() {
+        return photoLog;
+    }
+
+    public void setPhotoLog(String photoLog) {
+        this.photoLog = photoLog;
     }
 }

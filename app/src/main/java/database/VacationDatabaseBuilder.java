@@ -16,7 +16,7 @@ import entities.Vacation;
 
 import android.content.Context;
 
-@Database(entities = {Vacation.class, Excursion.class, User.class, Photo.class}, version = 11, exportSchema = false)
+@Database(entities = {Vacation.class, Excursion.class, User.class, Photo.class}, version = 12, exportSchema = false)
 public abstract class VacationDatabaseBuilder extends RoomDatabase{
     public abstract VacationDAO vacationDAO();
     public abstract ExcursionDAO excursionDAO();

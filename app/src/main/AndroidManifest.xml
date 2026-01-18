@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,7 +21,9 @@
         android:theme="@style/Theme.D308VacationPlanner">
         <activity
             android:name=".PhotoDetails"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Photo Details"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".PhotoGallery"
             android:exported="false"

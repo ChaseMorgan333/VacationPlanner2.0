@@ -294,6 +294,7 @@ public class VacationDetails extends AppCompatActivity{
             }else{
                 Toast.makeText(getApplicationContext(), "Vacation: " + name + " deleted.", Toast.LENGTH_LONG).show();
                 repository.delete(vacationID);
+                repository.deletePhoto(vacationID);
                 this.finish();
             }
 

@@ -87,9 +87,10 @@ public class PhotoGallery extends AppCompatActivity {
         repository = new Repository(getApplication());
 
         List<Photo> existingPhotos = repository.getmAssociatedPhotos(vacationID);
-        for(Photo p: existingPhotos){
-            System.out.println(p.getPhotoName());
-        }
+        //just checking that all the photos are in the list
+        System.out.println(existingPhotos.toString());
+        //The photos need to be shared to the recyclerAdapter so an intent can be started with the photo id
+
         if(existingPhotos!=null){
             for(Photo p: existingPhotos){
                 ImageRecyclerData recyclerData = new ImageRecyclerData();
@@ -111,6 +112,8 @@ public class PhotoGallery extends AppCompatActivity {
 
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
+                adapter.setPhotos(existingPhotos);
+
             }
         }else{
             System.out.println("Null");
@@ -129,6 +132,7 @@ public class PhotoGallery extends AppCompatActivity {
         final ImageRecyclerAdapter recyclerAdapter = new ImageRecyclerAdapter(this.recyclerDataArrayList, getApplicationContext());
         recyclerView1.setAdapter(recyclerAdapter);
         recyclerView1.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
+        recyclerAdapter.setPhotos(allPhotos);
         if(allPhotos.isEmpty()){
 
         }
@@ -158,10 +162,13 @@ public class PhotoGallery extends AppCompatActivity {
             ImageRecyclerData imageData = new ImageRecyclerData();
             imageData.setBitmap(imageBitmap);
 
+
             photo = new Photo();
             photo.setVacationID(this.vacationID);
             photo.setPhotoName("New Photo");
             photo.setBlob(getBytesFromBitmap(imageBitmap));
+            imageData.setPhoto(photo);
+            imageData.setImgid(photo.getPhotoID());
 
             repository.insert(photo);
 

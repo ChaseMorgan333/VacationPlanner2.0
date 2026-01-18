@@ -5,8 +5,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import entities.Photo;
@@ -25,6 +25,16 @@ public interface PhotoDAO {
     byte[] getByteArrayFromDB(int photoID);
 
     @Delete
-    void delete(Photo photo);
+    void deletePhoto(Photo photo);
+
+    @Query("DELETE FROM PHOTOS WHERE vacationID = :vacationID")
+    void deletePhoto(int vacationID);
+
+    @Query("UPDATE PHOTOS SET PHOTONAME = :photoName WHERE photoID = :photoID")
+    void updatePhotoName(String photoName, int photoID);
+
+    @Query("UPDATE PHOTOS SET PHOTOLOG = :photoLog WHERE photoID = :photoID")
+    void updatePhotoLog(String photoLog, int photoID);
+
 
 }

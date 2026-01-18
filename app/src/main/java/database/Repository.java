@@ -234,6 +234,12 @@ public class Repository {
 
     }
 
+    public void deletePhoto(int vacationID){
+        databaseExecutor.execute(()->{
+            mPhotoDAO.deletePhoto(vacationID);
+        });
+    }
+
     public void delete(Excursion excursion){
         databaseExecutor.execute(()->{
             mExcursionDAO.delete(excursion);
@@ -271,6 +277,28 @@ public class Repository {
     public void update(User user){
         databaseExecutor.execute(()->{
             update(user);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updatePhotoName(String photoName, int photoID){
+        databaseExecutor.execute(()->{
+            mPhotoDAO.updatePhotoName(photoName, photoID);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updatePhotoLog(String photoLog, int photoID){
+        databaseExecutor.execute(()->{
+            mPhotoDAO.updatePhotoLog(photoLog, photoID);
         });
         try{
             Thread.sleep(1000);

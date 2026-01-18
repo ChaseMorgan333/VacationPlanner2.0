@@ -3,6 +3,8 @@ package com.example.d308vacationplanner.UI;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
+import entities.Photo;
+
 public class ImageRecyclerData {
 
     private ImageView imageView;
@@ -10,6 +12,9 @@ public class ImageRecyclerData {
     private int imgid;
 
     private Bitmap bitmap;
+
+
+    private Photo photo;
 
 
 
@@ -35,5 +40,13 @@ public class ImageRecyclerData {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 }
