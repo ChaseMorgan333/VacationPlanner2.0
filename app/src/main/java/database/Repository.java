@@ -234,9 +234,9 @@ public class Repository {
 
     }
 
-    public void deletePhoto(int vacationID){
+    public void deletePhoto(int photoID){
         databaseExecutor.execute(()->{
-            mPhotoDAO.deletePhoto(vacationID);
+            mPhotoDAO.deletePhoto(photoID);
         });
     }
 

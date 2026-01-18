@@ -27,8 +27,8 @@ public interface PhotoDAO {
     @Delete
     void deletePhoto(Photo photo);
 
-    @Query("DELETE FROM PHOTOS WHERE vacationID = :vacationID")
-    void deletePhoto(int vacationID);
+    @Query("DELETE FROM PHOTOS WHERE photoID = :photoID")
+    void deletePhoto(int photoID);
 
     @Query("UPDATE PHOTOS SET PHOTONAME = :photoName WHERE photoID = :photoID")
     void updatePhotoName(String photoName, int photoID);

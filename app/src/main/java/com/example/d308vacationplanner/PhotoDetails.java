@@ -29,6 +29,8 @@ public class PhotoDetails extends AppCompatActivity {
 
     Repository repository;
 
+    private int photoID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +55,15 @@ public class PhotoDetails extends AppCompatActivity {
         editTextPhotoLog.setEnabled(false);
         editTextPhotoLog.setText(getIntent().getStringExtra("photoLog"));
         repository = new Repository(getApplication());
+        photoID = getIntent().getIntExtra("photoID", -1);
 
 
 
 
 
     }//end oncreate
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -74,8 +79,13 @@ public class PhotoDetails extends AppCompatActivity {
         }
 
         if(item.getItemId()==R.id.savedetails){
-            repository.updatePhotoName(editTextPhotoName.getText().toString(), getIntent().getIntExtra("photoID", -1));
-            repository.updatePhotoLog(editTextPhotoLog.getText().toString(), getIntent().getIntExtra("photoID", -1));
+            repository.updatePhotoName(editTextPhotoName.getText().toString(), photoID);
+            repository.updatePhotoLog(editTextPhotoLog.getText().toString(), photoID);
+            this.finish();
+        }
+
+        if(item.getItemId()==R.id.deletephoto){
+            repository.deletePhoto(photoID);
             this.finish();
         }
         return true;

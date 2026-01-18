@@ -101,11 +101,13 @@ public class PhotoGallery extends AppCompatActivity {
                     if(bitmap == null){
                         Toast.makeText(getApplicationContext(), "Couldn't load image", Toast.LENGTH_LONG).show();
                     }else{
+                        //need to change
                         recyclerData.setBitmap(bitmap);
                     }
                 }else{
                     Toast.makeText(getApplicationContext(), "Couldn't load image", Toast.LENGTH_LONG).show();
                 }
+                //need to change
                 recyclerDataArrayList.add(recyclerData);
                 ImageRecyclerAdapter adapter = new ImageRecyclerAdapter(recyclerDataArrayList, this);
                 GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
@@ -128,6 +130,7 @@ public class PhotoGallery extends AppCompatActivity {
 
         super.onResume();
         List<Photo> allPhotos = repository.getmAssociatedPhotos(vacationID);
+
         RecyclerView recyclerView1 = findViewById(R.id.imagerecyclerview);
         final ImageRecyclerAdapter recyclerAdapter = new ImageRecyclerAdapter(this.recyclerDataArrayList, getApplicationContext());
         recyclerView1.setAdapter(recyclerAdapter);
