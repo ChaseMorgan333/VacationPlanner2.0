@@ -19,6 +19,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.d308vacationplanner.UI.PacklistAdapter;
 
 import java.util.List;
 
@@ -41,7 +45,8 @@ public class PackingList extends AppCompatActivity {
     private TextView resultsForTextView;
     private TextView reportGeneratedTextView;
 
-    private List<Packlist> itemsForTrip;
+    private List<Packlist> itemsToDisplay;
+
 
     private Repository repository;
 
@@ -75,8 +80,19 @@ public class PackingList extends AppCompatActivity {
             }
         });
         repository = new Repository(getApplication());
+        spinnerSearchCategory = findViewById(R.id.spinnerSearchCategory);
 
+        showCategoryButton = findViewById(R.id.showCategoryButton);
+        showCategoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String categoryToSearch = spinnerSearchCategory.getSelectedItem().toString();
+                searchItemByCategory(categoryToSearch);
+                Toast.makeText(getApplicationContext(), "Searching by category: " + categoryToSearch, Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        showAllItems();
 
 
 
@@ -86,6 +102,55 @@ public class PackingList extends AppCompatActivity {
 
 
     }//end of oncreate
+    private void showAllItems(){
+        RecyclerView recyclerView = findViewById(R.id.packlistrecyclerview);
+        List<Packlist> allItems = repository.getAllItems();
+        PacklistAdapter packlistAdapter = new PacklistAdapter(this);
+        recyclerView.setAdapter(packlistAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        packlistAdapter.setmPacklists(allItems);
+        packlistAdapter.notifyDataSetChanged();
+    }
+
+    private void searchItemByCategory(String category){
+        //get the recyclerview
+        RecyclerView recyclerView = findViewById(R.id.packlistrecyclerview);
+        //create a list of items to display
+        itemsToDisplay = repository.getPacklistItemByCategory(category);
+        //create the adapter
+        final PacklistAdapter adapter = new PacklistAdapter(this);
+        //set the adapter to the recyclerview
+        recyclerView.setAdapter(adapter);
+        //set the layoutmanager
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //set the list of items to the adapter
+        adapter.setmPacklists(itemsToDisplay);
+        System.out.println(itemsToDisplay.toString());
+        adapter.notifyDataSetChanged();
+
+
+    }
+
+    private void searchItemByName(String token){
+        //get the recyclerview
+        RecyclerView recyclerView = findViewById(R.id.packlistrecyclerview);
+        //create a list of items to display
+        itemsToDisplay = repository.getPacklistItemByName(token);
+        //create the adapter
+        final PacklistAdapter adapter = new PacklistAdapter(this);
+        //set the adapter to the recyclerview
+        recyclerView.setAdapter(adapter);
+        //set the layoutmanager
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //set the list of items to the adapter
+        adapter.setmPacklists(itemsToDisplay);
+        System.out.println(itemsToDisplay.toString());
+        adapter.notifyDataSetChanged();
+
+
+    }
+
+
     private void addNewItem(){
         //First thing is to set functionality for adding a new item to the database. All these things will happen when the add button is clicked.
         //We need to get the vacationID, theCategory, the itemName, packedYN, and the button to handle the save.
@@ -105,6 +170,8 @@ public class PackingList extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Item: " + itemName + " successfully added to category: " + itemCategory, Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

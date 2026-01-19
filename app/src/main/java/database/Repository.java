@@ -51,6 +51,12 @@ public class Repository {
 
     private List<User> mAllUsers;
 
+    private List<Packlist> mAssociatedPackItems;
+
+    private List<Packlist> mAssociatedPackItems2;
+
+    private List<Packlist> mAllPackItems;
+
     private static int NUMBER_OF_THREADS = 4;
 
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -211,10 +217,42 @@ public class Repository {
             mPacklistDAO.insert(itemToAdd);
         });
     }
-    //repo method for deleting items.
-    //repo method for selecting a list of items based only on their name.
     //repo method for selecting a list of items based only on their category.
+    public List<Packlist> getPacklistItemByCategory(String category){
+        databaseExecutor.execute(()->{
+            mAssociatedPackItems = mPacklistDAO.getPacklistItemByCategory(category);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAssociatedPackItems;
+    }
+    //repo method for selecting a list of items based only on their name.
+    public List<Packlist> getPacklistItemByName(String name){
+        databaseExecutor.execute(()->{
+            mAssociatedPackItems2 = mPacklistDAO.getPacklistItemByCategory(name);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAssociatedPackItems2;
+    }
 
+    public List<Packlist> getAllItems(){
+        databaseExecutor.execute(()->{
+            mAllPackItems = mPacklistDAO.allRecords();
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAllPackItems;
+    }
     //-----------------------________END_PACKLISTS________--------------------------//
 
 
