@@ -11,8 +11,9 @@
 
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
             android:id="@+id/imageView"
             android:layout_gravity="center_horizontal"
             android:src="@color/cardview_dark_background"
