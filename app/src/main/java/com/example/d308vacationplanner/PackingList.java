@@ -161,7 +161,7 @@ public class PackingList extends AppCompatActivity {
 
     }//end of oncreate
     public static void refreshRecyclerView(List<Packlist> newList){
-        itemsToDisplay = newList;
+
 
     }
 

@@ -1,5 +1,8 @@
 package com.example.d308vacationplanner.UI;
 
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+
 import com.example.d308vacationplanner.PackingList;
 import com.example.d308vacationplanner.R;
 
@@ -63,17 +66,22 @@ public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.Packli
             holder.itemNameTextView.setText(name);
             holder.itemCategoryTextView.setText(category);
             holder.itemPackedTextView.setText(packedYN);
+
+            //setting the functionality of the delete button to delete an item from the repo
             holder.deleteItembButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     repo.deletePackListItem(current.getItemID(), current.getVacationID());
                     mPacklists.remove(current);
-                    PackingList.refreshRecyclerView(mPacklists);
+                    v.setVisibility(GONE);
+                    //PackingList.refreshRecyclerView(mPacklists);
+
 
                 }
             });
         }
     }
+
 
     @Override
     public int getItemCount(){
@@ -88,7 +96,7 @@ public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.Packli
             private final TextView itemNameTextView;
             private final TextView itemCategoryTextView;
 
-            private final TextView itemPackedTextView;
+            private TextView itemPackedTextView;
             private final Button deleteItembButton;
 
 
@@ -101,13 +109,7 @@ public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.Packli
                 itemCategoryTextView = itemView.findViewById(R.id.textViewItemCategoryHolder);
                 itemPackedTextView = itemView.findViewById(R.id.textViewItemPackedHolder);
                 deleteItembButton = itemView.findViewById(R.id.deletepacklistitembutton);
-                deleteItembButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int position = getAdapterPosition();
-                        System.out.println(mPacklists.get(position).getCategory());
-                    }
-                });
+
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -116,10 +118,12 @@ public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.Packli
                         if(item.getPacked()){
                             item.setPacked(false);
                             repo.updatePacklistItem(item);
+                            itemPackedTextView.setText("Unpacked");
 
                         }else{
                             item.setPacked(true);
                             repo.updatePacklistItem(item);
+                            itemPackedTextView.setText("Packed");
                         }
                     }
                 });
