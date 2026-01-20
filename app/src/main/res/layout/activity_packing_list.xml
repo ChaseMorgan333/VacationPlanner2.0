@@ -132,50 +132,95 @@
             android:id="@+id/spinnerSearchCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="2" />
         <Button
+            android:padding="0dp"
             android:id="@+id/showCategoryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Show Category" />
+        <Button
+            android:padding="0dp"
+            android:id="@+id/showallbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show All"/>
     </LinearLayout>
 
+    <!-- adding this linear layout to display button for show unpacked -->
+    <LinearLayout
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout8">
+        <Button
+            android:id="@+id/showUnpackedButton"
+            android:text="Show Unpacked"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1">
+
+        </Button>
+        <Button
+            android:id="@+id/showPackedButton"
+            android:text="Show Packed"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1">
+
+        </Button>
+    </LinearLayout>
+
+    <!--change to 8 -->
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout6"
-
-        >
-
-        <TextView
-
-            android:layout_width="16dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Results for:" />
-
-        <TextView
-            android:id="@+id/resultsForTextView"
-            android:layout_width="97dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="75dp"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout8">
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Report Generated:" />
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/reportGeneratedTextView"
-            android:layout_width="wrap_content"
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Results for:" />
+
+            <TextView
+                android:id="@+id/resultsForTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Report Generated:" />
+
+            <TextView
+                android:id="@+id/reportGeneratedTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                 />
+        </LinearLayout>
+
+
+
+
     </LinearLayout>
 
     <LinearLayout

@@ -1,7 +1,9 @@
 package com.example.d308vacationplanner.UI;
 
+import com.example.d308vacationplanner.PackingList;
 import com.example.d308vacationplanner.R;
 
+import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import database.Repository;
 import entities.Packlist;
 
 public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.PacklistViewHolder> {
     private List<Packlist> mPacklists;
     private final Context context;
     private final LayoutInflater mInflater;
+
+    private Repository repo;
+
+    private PackingList packingList;
+
+
 
     public PacklistAdapter(Context context){
         mInflater = LayoutInflater.from(context);
@@ -39,9 +48,12 @@ public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.Packli
     public void onBindViewHolder(@NonNull PacklistAdapter.PacklistViewHolder holder, int position) {
         if(mPacklists!=null){
             Packlist current = mPacklists.get(position);
+            int itemID = current.getItemID();
             String name = current.getItemName();
             String category = current.getCategory();
             String packedYN;
+            repo = new Repository((Application)holder.itemView.getContext().getApplicationContext());
+
             Boolean packed = current.getPacked();
             if(packed){
                 packedYN = "Yes";
@@ -51,6 +63,15 @@ public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.Packli
             holder.itemNameTextView.setText(name);
             holder.itemCategoryTextView.setText(category);
             holder.itemPackedTextView.setText(packedYN);
+            holder.deleteItembButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    repo.deletePackListItem(current.getItemID(), current.getVacationID());
+                    mPacklists.remove(current);
+                    PackingList.refreshRecyclerView(mPacklists);
+
+                }
+            });
         }
     }
 
@@ -70,8 +91,11 @@ public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.Packli
             private final TextView itemPackedTextView;
             private final Button deleteItembButton;
 
+
             public PacklistViewHolder(@NonNull View itemView){
                 super(itemView);
+
+
                 packlistItemView = itemView.findViewById(R.id.packlistlinearlayout);
                 itemNameTextView = itemView.findViewById(R.id.textViewItemNameHolder);
                 itemCategoryTextView = itemView.findViewById(R.id.textViewItemCategoryHolder);
@@ -81,7 +105,22 @@ public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.Packli
                     @Override
                     public void onClick(View v) {
                         int position = getAdapterPosition();
+                        System.out.println(mPacklists.get(position).getCategory());
+                    }
+                });
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = getAdapterPosition();
+                        Packlist item = mPacklists.get(position);
+                        if(item.getPacked()){
+                            item.setPacked(false);
+                            repo.updatePacklistItem(item);
 
+                        }else{
+                            item.setPacked(true);
+                            repo.updatePacklistItem(item);
+                        }
                     }
                 });
             }

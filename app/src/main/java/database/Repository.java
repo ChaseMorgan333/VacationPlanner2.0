@@ -57,6 +57,10 @@ public class Repository {
 
     private List<Packlist> mAllPackItems;
 
+    private List<Packlist> mGetPackedItems;
+
+    private List<Packlist> mGetUnpackedItems;
+
     private static int NUMBER_OF_THREADS = 4;
 
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -218,9 +222,9 @@ public class Repository {
         });
     }
     //repo method for selecting a list of items based only on their category.
-    public List<Packlist> getPacklistItemByCategory(String category){
+    public List<Packlist> getPacklistItemByCategory(String category, int vacationID){
         databaseExecutor.execute(()->{
-            mAssociatedPackItems = mPacklistDAO.getPacklistItemByCategory(category);
+            mAssociatedPackItems = mPacklistDAO.getPacklistItemByCategory(category, vacationID);
         });
         try{
             Thread.sleep(1000);
@@ -230,9 +234,9 @@ public class Repository {
         return mAssociatedPackItems;
     }
     //repo method for selecting a list of items based only on their name.
-    public List<Packlist> getPacklistItemByName(String name){
+    public List<Packlist> getPacklistItemByName(String token, int vacationID){
         databaseExecutor.execute(()->{
-            mAssociatedPackItems2 = mPacklistDAO.getPacklistItemByCategory(name);
+            mAssociatedPackItems2 = mPacklistDAO.getPacklistItemByToken(token, vacationID);
         });
         try{
             Thread.sleep(1000);
@@ -242,9 +246,9 @@ public class Repository {
         return mAssociatedPackItems2;
     }
 
-    public List<Packlist> getAllItems(){
+    public List<Packlist> getAllItems(int vacationID){
         databaseExecutor.execute(()->{
-            mAllPackItems = mPacklistDAO.allRecords();
+            mAllPackItems = mPacklistDAO.allRecords(vacationID);
         });
         try{
             Thread.sleep(1000);
@@ -252,6 +256,47 @@ public class Repository {
             e.printStackTrace();
         }
         return mAllPackItems;
+    }
+    //
+    public List<Packlist> getPackedItems(int vacationID){
+        databaseExecutor.execute(()->{
+            mGetPackedItems = mPacklistDAO.getPackedItems(vacationID);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mGetPackedItems;
+    }
+    //
+    public List<Packlist> getGetUnpackedItems(int vacationID){
+        databaseExecutor.execute(()->{
+            mGetUnpackedItems = mPacklistDAO.getUnpackedItems(vacationID);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mGetUnpackedItems;
+    }
+
+    public void updatePacklistItem(Packlist item){
+        databaseExecutor.execute(()->{
+            mPacklistDAO.updatePacklistItem(item);
+        });
+    }
+
+    public void deletePackListItem(int itemID, int vacationID){
+        databaseExecutor.execute(()->{
+            mPacklistDAO.deletePacklist(itemID, vacationID);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
     //-----------------------________END_PACKLISTS________--------------------------//
 

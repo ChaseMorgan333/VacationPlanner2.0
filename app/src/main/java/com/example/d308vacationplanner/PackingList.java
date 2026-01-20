@@ -24,6 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.d308vacationplanner.UI.PacklistAdapter;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import dao.PacklistDAO;
@@ -45,12 +48,23 @@ public class PackingList extends AppCompatActivity {
     private TextView resultsForTextView;
     private TextView reportGeneratedTextView;
 
-    private List<Packlist> itemsToDisplay;
+    private Button showAllButton;
+
+    private Button showPackedButton;
+    private Button showUnapckedButton;
+
+
+    private static List<Packlist> itemsToDisplay;
 
 
     private Repository repository;
 
     private Packlist currentPacklist;
+
+    // Current Date and Time (with time zone)
+    private ZonedDateTime currentZonedDateTime; //ZonedDateTime.now();
+
+    private LocalDateTime dateTimeLocal; //LocalDateTime.now()
 
 
     @Override
@@ -73,6 +87,12 @@ public class PackingList extends AppCompatActivity {
         categorySpinner = findViewById(R.id.categorySpinner);
         itemPackedCheckbox = findViewById(R.id.itemPackedCheckbox);
         addItemButton = findViewById(R.id.addItemButton);
+        resultsForTextView = findViewById(R.id.resultsForTextView);
+        reportGeneratedTextView = findViewById(R.id.reportGeneratedTextView);
+        showPackedButton = findViewById(R.id.showPackedButton);
+
+        showUnapckedButton = findViewById(R.id.showUnpackedButton);
+
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,8 +113,46 @@ public class PackingList extends AppCompatActivity {
         });
 
         showAllItems();
+        showPackedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //repository method that runs dao query to get all the packed items
+                showPackedItems();
+            }
+        });
 
+        showUnapckedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showUnPackedItems();
+            }
+        });
 
+        //Need to format the datetime so it fits in the view.
+        //reportGeneratedTextView = findViewById(R.id.reportGeneratedTextView);
+        //reportGeneratedTextView.setText(ZonedDateTime.now().toString());
+        searchView = findViewById(R.id.searchView);
+        searchItemButton = findViewById(R.id.searchItemButton);
+        searchItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchToken = searchView.getQuery().toString();
+                if(searchToken.isBlank()||searchToken.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please enter a query.", Toast.LENGTH_SHORT).show();
+                }else{
+                    searchItemByName(searchToken);
+                }
+
+            }
+        });
+
+        showAllButton = findViewById(R.id.showallbutton);
+        showAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAllItems();
+            }
+        });
 
 
 
@@ -102,21 +160,35 @@ public class PackingList extends AppCompatActivity {
 
 
     }//end of oncreate
+    public static void refreshRecyclerView(List<Packlist> newList){
+        itemsToDisplay = newList;
+
+    }
+
+
+    private String formattedDateTime(LocalDateTime dateTime){
+        DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
+        return dateTime.format(customFormatter);
+    }
+
     private void showAllItems(){
         RecyclerView recyclerView = findViewById(R.id.packlistrecyclerview);
-        List<Packlist> allItems = repository.getAllItems();
+        List<Packlist> allItems = repository.getAllItems(vacationID);
         PacklistAdapter packlistAdapter = new PacklistAdapter(this);
         recyclerView.setAdapter(packlistAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         packlistAdapter.setmPacklists(allItems);
+        resultsForTextView.setText("All Items");
+        dateTimeLocal = LocalDateTime.now();
+        reportGeneratedTextView.setText(formattedDateTime(dateTimeLocal));
         packlistAdapter.notifyDataSetChanged();
     }
 
-    private void searchItemByCategory(String category){
+    private void showPackedItems(){
         //get the recyclerview
         RecyclerView recyclerView = findViewById(R.id.packlistrecyclerview);
         //create a list of items to display
-        itemsToDisplay = repository.getPacklistItemByCategory(category);
+        itemsToDisplay = repository.getPackedItems(vacationID);
         //create the adapter
         final PacklistAdapter adapter = new PacklistAdapter(this);
         //set the adapter to the recyclerview
@@ -125,7 +197,41 @@ public class PackingList extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //set the list of items to the adapter
         adapter.setmPacklists(itemsToDisplay);
-        System.out.println(itemsToDisplay.toString());
+        resultsForTextView.setText("All Packed Items");
+        adapter.notifyDataSetChanged();
+    }
+
+    private void showUnPackedItems(){
+        //get the recyclerview
+        RecyclerView recyclerView = findViewById(R.id.packlistrecyclerview);
+        //create a list of items to display
+        itemsToDisplay = repository.getGetUnpackedItems(vacationID);
+        //create the adapter
+        final PacklistAdapter adapter = new PacklistAdapter(this);
+        //set the adapter to the recyclerview
+        recyclerView.setAdapter(adapter);
+        //set the layoutmanager
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //set the list of items to the adapter
+        adapter.setmPacklists(itemsToDisplay);
+        resultsForTextView.setText("All Unpacked Items");
+        adapter.notifyDataSetChanged();
+    }
+
+    private void searchItemByCategory(String category){
+        //get the recyclerview
+        RecyclerView recyclerView = findViewById(R.id.packlistrecyclerview);
+        //create a list of items to display
+        itemsToDisplay = repository.getPacklistItemByCategory(category, vacationID);
+        //create the adapter
+        final PacklistAdapter adapter = new PacklistAdapter(this);
+        //set the adapter to the recyclerview
+        recyclerView.setAdapter(adapter);
+        //set the layoutmanager
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //set the list of items to the adapter
+        adapter.setmPacklists(itemsToDisplay);
+        resultsForTextView.setText("Category: " + category);
         adapter.notifyDataSetChanged();
 
 
@@ -135,7 +241,8 @@ public class PackingList extends AppCompatActivity {
         //get the recyclerview
         RecyclerView recyclerView = findViewById(R.id.packlistrecyclerview);
         //create a list of items to display
-        itemsToDisplay = repository.getPacklistItemByName(token);
+        itemsToDisplay = repository.getPacklistItemByName(token, vacationID);
+        System.out.println(itemsToDisplay.toString());
         //create the adapter
         final PacklistAdapter adapter = new PacklistAdapter(this);
         //set the adapter to the recyclerview
@@ -144,7 +251,7 @@ public class PackingList extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //set the list of items to the adapter
         adapter.setmPacklists(itemsToDisplay);
-        System.out.println(itemsToDisplay.toString());
+        resultsForTextView.setText(token);
         adapter.notifyDataSetChanged();
 
 
