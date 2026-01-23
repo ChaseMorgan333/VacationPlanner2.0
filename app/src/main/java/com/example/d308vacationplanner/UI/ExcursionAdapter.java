@@ -1,5 +1,7 @@
 package com.example.d308vacationplanner.UI;
 
+import static android.view.View.VISIBLE;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -34,13 +36,17 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
 
     public class ExcursionViewHolder extends RecyclerView.ViewHolder {
         private final TextView excursionItemView;
+        private final TextView excursionDateTimeView;
 
+        private final TextView noExcursionsTextView;
 
 
 
         public ExcursionViewHolder(@NonNull View itemView) {
             super(itemView);
             excursionItemView = itemView.findViewById(R.id.excursionListTextView);
+            excursionDateTimeView = itemView.findViewById(R.id.datetimeexcursionview);
+            noExcursionsTextView = itemView.findViewById(R.id.noexcursionstextview);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -72,10 +78,11 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
         if(mExcursions!=null){
             Excursion current = mExcursions.get(position);
             String excursionName = current.getExcursionName();
+            String excursionDateTime = current.getExcursionDate();
             holder.excursionItemView.setText(excursionName);
-        }else{
-            holder.excursionItemView.setText("No excursions scheduled.");
-        }
+            holder.excursionDateTimeView.setText(excursionDateTime);
+        }else { }
+
     }
 
     public void setExcursions(List<Excursion> excursions){

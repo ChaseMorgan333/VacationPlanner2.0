@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.time.LocalDateTime;
+
 import database.Repository;
 
 @Entity(tableName = "excursions")
@@ -21,7 +23,10 @@ public class Excursion {
 
 
 
-
+    //NEED TO ADD PARAMETER FOR TIME THAT COMES FROM THE TIMEPICKER--
+    /*--- When the user picks a time in the timepicker the excursion will be
+    constructed using the users selected time.
+     */
     public Excursion(int vacationID, int excursionID, String excursionName, String excursionDate){
         this.vacationID = vacationID;
         this.excursionID = excursionID;

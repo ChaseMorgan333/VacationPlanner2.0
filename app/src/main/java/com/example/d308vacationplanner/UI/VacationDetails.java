@@ -191,11 +191,13 @@ public class VacationDetails extends AppCompatActivity{
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //this list is going to contain the excursions related to the selected vacation.
         List<Excursion> filteredExcursions = new ArrayList<>();
-        for(Excursion excursion : repository.getmAllExcursions()){
-            if(excursion.getVacationID() == vacationID) filteredExcursions.add(excursion);
+        ///THIS NEEDS TO BE CHANGED TO USE THE REPOSITORY METHOD THAT GETS ASSOCIATED EXCURSIONS/////
+        //for(Excursion excursion : repository.getmAllExcursions()){
+        //    if(excursion.getVacationID() == vacationID) filteredExcursions.add(excursion);
 
-        }
-        excursionAdapter.setExcursions(filteredExcursions);
+        //}
+
+        excursionAdapter.setExcursions(repository.getmAssociatedExcursions(vacationID));
     }
 
     @Override
@@ -256,6 +258,7 @@ public class VacationDetails extends AppCompatActivity{
                     repository.insert(vacation);
 
 
+
                 } else {
                     //if the repo is not empty we get the id of the last vacation in the list and set the new vacation id to that number
                     //plus 1
@@ -268,6 +271,7 @@ public class VacationDetails extends AppCompatActivity{
                     this.endDate = vacationEndDate.getText().toString();
                     Toast.makeText(getApplicationContext(), "New vacation created: " + vacation.getVacationName(), Toast.LENGTH_LONG).show();
                     repository.insert(vacation);
+
 
 
                 }

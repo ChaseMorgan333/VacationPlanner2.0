@@ -73,8 +73,11 @@ public class PacklistAdapter extends RecyclerView.Adapter<PacklistAdapter.Packli
                 public void onClick(View v) {
                     repo.deletePackListItem(current.getItemID(), current.getVacationID());
                     mPacklists.remove(current);
-                    v.setVisibility(GONE);
-                    //PackingList.refreshRecyclerView(mPacklists);
+                    //holder.itemView.setVisibility(GONE);
+                    notifyItemRemoved(holder.getPosition());
+                    notifyDataSetChanged();
+
+
 
 
                 }

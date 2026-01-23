@@ -105,6 +105,7 @@ public class ExcursionDetails extends AppCompatActivity {
             if(hasDate()&&hasName()) {
                 Excursion excursion;
                 this.excursionName = editExcursionName.getText().toString();
+                this.excursionDate = editExcursionDate.getText().toString();
                 //creating a new excursion because we aren't editing an existing one.
                 if (excursionID == -1) {
                     System.out.println("Creating a new excursion");
@@ -118,7 +119,10 @@ public class ExcursionDetails extends AppCompatActivity {
                         finish();
                     } else {
                         //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
-                        excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
+
+                        excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() -1).getExcursionID() + 1;
+                        int idoflastexcursion = repository.getmAllExcursions().get(repository.getmAllExcursions().size()-1).getExcursionID();
+                        System.out.println("Repo not empty- id of last excursion in list is:" + idoflastexcursion );
                         excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
                         Toast.makeText(getApplicationContext(), "Excursion " + excursionName + " has been saved.", Toast.LENGTH_LONG).show();
                         repository.insert(excursion);
@@ -128,6 +132,7 @@ public class ExcursionDetails extends AppCompatActivity {
                     //update existing excursion
                 } else {
                     excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate);
+                    System.out.println(excursionID);
                     Toast.makeText(getApplicationContext(), "Excursion " + excursionName + " has been updated.", Toast.LENGTH_LONG).show();
                     repository.update(excursion);
                     finish();
@@ -183,6 +188,7 @@ public class ExcursionDetails extends AppCompatActivity {
 
                     //check if repo is empty and if it is then excursionID will be 1.
                     if (repository.getmAllExcursions().isEmpty()) {
+                        System.out.println("Repo is empty");
                         excursionID = 1;
                         excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
                         System.out.println("inserting excursion");
@@ -193,7 +199,7 @@ public class ExcursionDetails extends AppCompatActivity {
                         //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
                         excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
                         excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
-                        System.out.println("inserting excursion2");
+                        System.out.println("inserting excursion with id:" + excursionID);
                         repository.insert(excursion);
                         Toast.makeText(getApplicationContext(), "Excursion " + excursionName + " has been saved.", Toast.LENGTH_LONG).show();
                         this.finish();

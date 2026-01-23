@@ -151,6 +151,22 @@ public class Repository {
         databaseExecutor.execute(()->{
             mExcursionDAO.insert(excursion);
         });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void update(Excursion excursion) {
+        databaseExecutor.execute(()->{
+            mExcursionDAO.update(excursion);
+        });
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
     //-----------------------________END_EXCURSIONS________--------------------------//
     public String getmVacationName(int vacationID){
@@ -175,6 +191,13 @@ public class Repository {
             e.printStackTrace();
         }
         return mAllUsers;
+    }
+
+    //inserts a user into the database
+    public void insert(User user){
+        databaseExecutor.execute(()->{
+            mUserDAO.insert(user);
+        });
     }
     //-----------------------________END_USERS________--------------------------//
     public String getmPassword(String userName){
@@ -309,12 +332,7 @@ public class Repository {
 
 
 
-    //inserts a user into the database
-    public void insert(User user){
-        databaseExecutor.execute(()->{
-            mUserDAO.insert(user);
-        });
-    }
+
 
     //inserts a photo into the database
     public void insert(Photo photo){
@@ -377,16 +395,7 @@ public class Repository {
         }
     }
 
-    public void update(Excursion excursion) {
-        databaseExecutor.execute(()->{
-            mExcursionDAO.update(excursion);
-        });
-        try{
-            Thread.sleep(1000);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
+
 
     public void update(User user){
         databaseExecutor.execute(()->{
