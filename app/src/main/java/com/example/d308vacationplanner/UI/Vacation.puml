@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Vacation{
+
+private int vacationID;
+
+    private String vacationName;
+
+
+
+    private String accommodation;
+
+
+
+    private String vacationStartDate;
+
+
+
+    private String vacationEndDate;
+
+    public Vacation(int vacationID, String vacationName, String accommodation, String vacationStartDate, String vacationEndDate){
+
+            this.vacationID = vacationID;
+            this.vacationName = vacationName;
+            this.accommodation = accommodation;
+            this.vacationStartDate = vacationStartDate;
+            this.vacationEndDate = vacationEndDate;
+        }
+
+
+
+}
+
+
+
+
+
+
+@enduml

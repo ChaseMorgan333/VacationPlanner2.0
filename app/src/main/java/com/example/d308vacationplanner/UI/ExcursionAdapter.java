@@ -38,6 +38,8 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
         private final TextView excursionItemView;
         private final TextView excursionDateTimeView;
 
+        private final TextView excursionTimeView;
+
         private final TextView noExcursionsTextView;
 
 
@@ -47,6 +49,7 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
             excursionItemView = itemView.findViewById(R.id.excursionListTextView);
             excursionDateTimeView = itemView.findViewById(R.id.datetimeexcursionview);
             noExcursionsTextView = itemView.findViewById(R.id.noexcursionstextview);
+            excursionTimeView = itemView.findViewById(R.id.localtimeexcursionview);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -58,6 +61,7 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
                     intent.putExtra("vacationID", current.getVacationID());
                     intent.putExtra("excursionName", current.getExcursionName());
                     intent.putExtra("excursionDate", current.getExcursionDate());
+                    intent.putExtra("excursionTime", current.getExcursionTime());
 
 
                     context.startActivity(intent);
@@ -79,6 +83,8 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
             Excursion current = mExcursions.get(position);
             String excursionName = current.getExcursionName();
             String excursionDateTime = current.getExcursionDate();
+            String excursionTime = current.getExcursionTime();
+            holder.excursionTimeView.setText(excursionTime);
             holder.excursionItemView.setText(excursionName);
             holder.excursionDateTimeView.setText(excursionDateTime);
         }else { }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -46,6 +47,8 @@ public class ExcursionDetails extends AppCompatActivity {
 
     String excursionDate;
 
+    String excursionTime;
+
     String vacationName;
 
     int excursionID;
@@ -59,6 +62,9 @@ public class ExcursionDetails extends AppCompatActivity {
     Button editExcursionDateButton;
 
     Repository repository;
+
+    TimePicker timePicker;
+
 
 
     @Override
@@ -81,6 +87,7 @@ public class ExcursionDetails extends AppCompatActivity {
         editExcursionName = findViewById(R.id.editExcursionName);
         editExcursionDate = findViewById(R.id.editExcursionDate);
         excursionDate = getIntent().getStringExtra("excursionDate");
+        excursionTime = getIntent().getStringExtra("excursionTime");
         vacationID = getIntent().getIntExtra("vacationID", -1);
         Log.w(TAG, Integer.toString(vacationID));
         //vacationName = getIntent().getStringExtra("vacationName");
@@ -93,6 +100,9 @@ public class ExcursionDetails extends AppCompatActivity {
         editExcursionName.setText(excursionName);
         editExcursionDate.setText(excursionDate);
         vacationNameLabel = findViewById(R.id.vacationNameLabel);
+
+        timePicker = findViewById(R.id.excursiontimepicker);
+
 
 
         vacationStartDate = repository.getmVacationStartDate(vacationID);
@@ -113,7 +123,7 @@ public class ExcursionDetails extends AppCompatActivity {
                     if (repository.getmAllExcursions().isEmpty()) {
                         System.out.println("The excursion repo is empty so we are using id 1");
                         excursionID = 1;
-                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
+                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString(),getExcursionTime());
                         Toast.makeText(getApplicationContext(), "Excursion " + excursionName + " has been saved.", Toast.LENGTH_LONG).show();
                         repository.insert(excursion);
                         finish();
@@ -123,7 +133,7 @@ public class ExcursionDetails extends AppCompatActivity {
                         excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() -1).getExcursionID() + 1;
                         int idoflastexcursion = repository.getmAllExcursions().get(repository.getmAllExcursions().size()-1).getExcursionID();
                         System.out.println("Repo not empty- id of last excursion in list is:" + idoflastexcursion );
-                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
+                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString(),getExcursionTime());
                         Toast.makeText(getApplicationContext(), "Excursion " + excursionName + " has been saved.", Toast.LENGTH_LONG).show();
                         repository.insert(excursion);
                         finish();
@@ -131,7 +141,7 @@ public class ExcursionDetails extends AppCompatActivity {
 
                     //update existing excursion
                 } else {
-                    excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate);
+                    excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate, getExcursionTime());
                     System.out.println(excursionID);
                     Toast.makeText(getApplicationContext(), "Excursion " + excursionName + " has been updated.", Toast.LENGTH_LONG).show();
                     repository.update(excursion);
@@ -150,6 +160,40 @@ public class ExcursionDetails extends AppCompatActivity {
 
 
     }
+
+    private String getExcursionTime(){
+        String ampm;
+        StringBuilder builder = new StringBuilder();
+        int hour = timePicker.getHour();
+        if(hour < 12){
+            ampm = "AM";
+        }else{
+            ampm = "PM";
+        }
+        if(hour > 12){
+            hour -= 12;
+        }
+        String hourString = Integer.toString(hour);
+        if(hour == 0){
+            hour = 12;
+        }
+
+
+        int minute = timePicker.getMinute();
+        String minuteString = Integer.toString(minute);
+
+
+        builder.append(hour);
+        builder.append(":");
+        if(minuteString.length()==1){
+            minuteString = "0" + minuteString;
+        }
+        builder.append(minuteString);
+        builder.append(" " + ampm);
+        excursionTime = builder.toString();
+        return excursionTime;
+    }
+
     private boolean hasName(){
         if (editExcursionName.getText().toString().isEmpty()||editExcursionName.getText().toString().isBlank()){
             Toast.makeText(this.getApplicationContext(), "Excursion must have a name.", Toast.LENGTH_SHORT).show();
@@ -190,7 +234,7 @@ public class ExcursionDetails extends AppCompatActivity {
                     if (repository.getmAllExcursions().isEmpty()) {
                         System.out.println("Repo is empty");
                         excursionID = 1;
-                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
+                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString(),getExcursionTime());
                         System.out.println("inserting excursion");
                         repository.insert(excursion);
                         Toast.makeText(getApplicationContext(), "Excursion " + excursionName + " has been saved.", Toast.LENGTH_LONG).show();
@@ -198,7 +242,7 @@ public class ExcursionDetails extends AppCompatActivity {
                     } else {
                         //if repo isn't empty we need the id of the last excursion in the list so we can set new one to that + 1.
                         excursionID = repository.getmAllExcursions().get(repository.getmAllExcursions().size() - 1).getExcursionID() + 1;
-                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString());
+                        excursion = new Excursion(vacationID, excursionID, editExcursionName.getText().toString(), editExcursionDate.getText().toString(),getExcursionTime());
                         System.out.println("inserting excursion with id:" + excursionID);
                         repository.insert(excursion);
                         Toast.makeText(getApplicationContext(), "Excursion " + excursionName + " has been saved.", Toast.LENGTH_LONG).show();
@@ -207,7 +251,7 @@ public class ExcursionDetails extends AppCompatActivity {
 
                     //update existing excursion
                 } else {
-                    excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate);
+                    excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate,getExcursionTime());
                     System.out.println("inserting excursion3");
                     repository.update(excursion);
                     Toast.makeText(getApplicationContext(), "Excursion " + excursionName + " has been updated.", Toast.LENGTH_LONG).show();
@@ -216,7 +260,7 @@ public class ExcursionDetails extends AppCompatActivity {
             }
         }
             if (item.getItemId() == R.id.deleteExcursionMenuItem) {
-                Excursion excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate);
+                Excursion excursion = new Excursion(vacationID, excursionID, excursionName, excursionDate,getExcursionTime());
                 repository.delete(excursion);
                 this.finish();
             }

@@ -20,6 +20,8 @@ public class Excursion {
 
     private String excursionDate;
 
+    private String excursionTime;
+
 
 
 
@@ -27,13 +29,12 @@ public class Excursion {
     /*--- When the user picks a time in the timepicker the excursion will be
     constructed using the users selected time.
      */
-    public Excursion(int vacationID, int excursionID, String excursionName, String excursionDate){
+    public Excursion(int vacationID, int excursionID, String excursionName, String excursionDate, String excursionTime){
         this.vacationID = vacationID;
         this.excursionID = excursionID;
         this.excursionName = excursionName;
         this.excursionDate = excursionDate;
-
-
+        this.excursionTime = excursionTime;
     }
 
     public int getExcursionID() {
@@ -66,5 +67,13 @@ public class Excursion {
 
     public void setExcursionDate(String excursionDate) {
         this.excursionDate = excursionDate;
+    }
+
+    public String getExcursionTime() {
+        return excursionTime;
+    }
+
+    public void setExcursionTime(String excursionTime) {
+        this.excursionTime = excursionTime;
     }
 }

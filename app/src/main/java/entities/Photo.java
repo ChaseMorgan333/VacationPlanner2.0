@@ -18,11 +18,11 @@ public class Photo {
 
     private byte[] blob;
 
+    private String photoLog;
+
     public String getPhotoName() {
         return photoName;
     }
-
-    private String photoLog;
 
     public void setPhotoName(String photoName) {
         this.photoName = photoName;
